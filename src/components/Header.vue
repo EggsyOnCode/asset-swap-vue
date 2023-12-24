@@ -9,7 +9,7 @@
       </button>
     </div>
     <div>
-      <Tasks :tasks="tasks" @remove_task="removeTask(id)"></Tasks>
+      <Tasks :tasks="$store?.state.tasks"></Tasks>
     </div>
   </div>
 </template>
@@ -20,35 +20,8 @@ export default {
   props: {
     title: String,
   },
-  data() {
-    return {
-      tasks: [],
-    };
-  },
-  created() {
-    this.tasks = [
-      {
-        name: "Do the dishes",
-        time: "9 am",
-        id: 1,
-      },
-      {
-        name: "Do the car wash",
-        time: "10 am",
-        id: 2,
-      },
-    ];
-  },
   components: {
     Tasks,
-  },
-  methods: {
-    removeTask(id) {
-      console.log(id);
-      this.tasks = this.tasks.filter((task) => {
-        task.id !== id;
-      });
-    },
   },
 };
 </script>

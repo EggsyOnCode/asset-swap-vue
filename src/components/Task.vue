@@ -9,7 +9,7 @@
     <div>
       <button
         class="text-black bg-pink-50 p-2 rounded-lg"
-        @click="removeTask(task.id)"
+        @click="$store.commit('removeTask', task.id)"
       >
         Remove Task
       </button>
@@ -21,12 +21,6 @@ export default {
   name: "TaskComp",
   props: {
     task: Object,
-  },
-  methods: {
-    removeTask(id) {
-      console.log("removing id", id);
-      this.$emit("remove_task", id);
-    },
   },
 };
 </script>

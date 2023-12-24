@@ -2,7 +2,7 @@
   <div class="">
     <!-- Wrap the content inside a parent element -->
     <div v-for="task in tasks" :key="task.id">
-      <Task @remove_task="$emit('remove_task', task.id)" :task="task"></Task>
+      <Task :task="task"></Task>
     </div>
   </div>
 </template>
@@ -22,6 +22,5 @@ export default {
   components: {
     Task,
   },
-  emits: ["remove_task"],
 };
 </script>
