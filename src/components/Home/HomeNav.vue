@@ -1,7 +1,7 @@
 <template>
-  <div class="p-4 bg-primary flex flex-row items-center justify-around">
+  <div class="p-4 bg-primary flex flex-row items-center justify-around text-lg">
     <div class="text-white font-garamond">
-      <a v-bind:href="firstNavItem.index">{{ firstNavItem.name }}</a>
+      <a v-bind:href="firstNavItem.index.toString()">{{ firstNavItem.name }}</a>
     </div>
     <div
       class="text-white font-garamond"
@@ -23,11 +23,11 @@ export default {
     };
   },
   computed: {
-    restNav() {
-      const rest = this.navBar.slice(1);
+    restNav(this: { navBar: navItem[] }): navItem[] {
+      const rest: navItem[] = this.navBar.slice(1);
       return rest;
     },
-    firstNavItem() {
+    firstNavItem(this: { navBar: navItem[] }): navItem {
       return this.navBar[0];
     },
   },
