@@ -1,5 +1,7 @@
 <template lang="html">
-  <div class="w-full bg-primary text-white font-garamond px-6 py-4 text-2xl">
+  <div
+    class="w-full bg-primary text-white font-garamond px-6 pt-4 pb-8 text-2xl"
+  >
     <p class="m-0">
       <span>{{ callToAction[0] }}</span>
     </p>

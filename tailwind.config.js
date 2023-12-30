@@ -8,6 +8,7 @@ module.exports = {
       accent: "#E8D5B5",
       bg: "#FEF6FF",
       green: "#FAFF00",
+      black: "#000000",
       white: "#FFFFFF",
     },
     fontFamily: {
