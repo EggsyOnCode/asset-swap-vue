@@ -1,18 +1,15 @@
 <template>
   <div class="home">
-    <Header title="Task Scheduler" />
+    <HomeNav />
   </div>
 </template>
 
 <script lang="ts">
+import HomeNav from "@/components/HomeNav.vue";
 import { Options, Vue } from "vue-class-component";
-import Header from "@/components/Header.vue"; // @ is an alias to /src
-import Tasks from "@/components/Tasks.vue"; // @ is an alias to /src
-
 @Options({
   components: {
-    Header,
-    Tasks,
+    HomeNav,
   },
 })
 export default class HomeView extends Vue {}
