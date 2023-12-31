@@ -1,5 +1,5 @@
 <template>
-  <div class="home bg-bg max-h-screen">
+  <div class="home bg-bg max-h-screen font-garamond">
     <HomeBanner />
     <home-asset-repo-vue />
   </div>
