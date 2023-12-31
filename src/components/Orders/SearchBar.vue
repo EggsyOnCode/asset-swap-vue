@@ -7,7 +7,7 @@
       type="text"
       placeholder="Search Orders"
     />
-    <circle-outline />
+    <circle-outline class="hover:cursor-pointer" />
   </div>
 </template>
 <script lang="ts">
