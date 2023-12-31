@@ -1,7 +1,14 @@
 <template lang="html">
-  <div></div>
+  <div class="flex flex-col items-center mt-10">
+    <SearchBarVue />
+  </div>
 </template>
 <script lang="ts">
-export default {};
+import SearchBarVue from "@/components/Orders/SearchBar.vue";
+export default {
+  components: {
+    SearchBarVue,
+  },
+};
 </script>
 <style lang=""></style>
