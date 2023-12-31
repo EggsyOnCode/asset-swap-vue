@@ -14,9 +14,42 @@
       </div>
       <input
         type="text"
-        class="bg-accent w-full rounded-lg h-[5%] p-1.5 text-black"
+        class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
         placeholder="Asset Name"
       />
+      <input
+        type="number"
+        class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+        placeholder="Asset Price"
+      />
+      <h1 class="text-xl font-normal pb-6 mt-3">~Asset Specs~</h1>
+      <input
+        type="text"
+        class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+        placeholder="Mileage"
+      />
+      <input
+        type="text"
+        class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+        placeholder="Location of Buyer"
+      />
+      <input
+        type="text"
+        class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+        placeholder="Registered At"
+      />
+      <input
+        type="text"
+        class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+        placeholder="Manufacturing Date"
+      />
+      <div class="w-full h-full flex flex-col justify-center flex-1">
+        <div
+          class="order-btn flex align-middle justify-center bg-green p-3 rounded-lg text-black font-bold text-2xl hover:cursor-pointer mt-4"
+        >
+          Create Order
+        </div>
+      </div>
     </div>
   </div>
 </template>
