@@ -40,6 +40,11 @@ export default {
     },
     setActive(item) {
       this.activeItem = item.index;
+      this.navToPage(item.name);
+    },
+    navToPage(item) {
+      console.log(item.toLowerCase());
+      this.$router.push(`/${item.toLowerCase()}`);
     },
   },
 };

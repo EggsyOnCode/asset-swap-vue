@@ -5,7 +5,7 @@
     <img
       src="../Home/../../assets/wallpaper.jpg"
       alt="free-img-api"
-      class="h-[100px] w-full rounded-[11px]"
+      class="h-[100px] w-full rounded-[11px] bg-primary"
     />
     <TextComponentVue :text="name" />
     <TextComponentVue :text="supplier" />

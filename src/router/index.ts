@@ -4,7 +4,7 @@ import OrdersViewVue from "@/views/OrdersView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: HomeView,
   },

@@ -1,6 +1,5 @@
 <template>
   <div class="home bg-bg max-h-screen">
-    <HomeNav />
     <HomeBanner />
     <home-asset-repo-vue />
   </div>

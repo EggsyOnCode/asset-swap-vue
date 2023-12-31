@@ -1,6 +1,17 @@
 <template>
+  <home-nav />
   <router-view />
 </template>
+
+<script>
+import HomeNav from "./components/Home/HomeNav.vue";
+
+export default {
+  components: {
+    HomeNav,
+  },
+};
+</script>
 
 <style>
 @tailwind base;

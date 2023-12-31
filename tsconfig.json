@@ -27,6 +27,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "src/main.ts"
-  ],
+, "src/components/index.js"  ],
   "exclude": ["node_modules"]
 }
