@@ -1,17 +1,14 @@
 <template>
-  <div class="home bg-bg h-screen">
+  <div class="home bg-bg max-h-screen">
     <HomeNav />
     <HomeBanner />
-    <AssetCardVue
-      :name="'Test Card'"
-      :price="23.98"
-      :supplier="'Gosal Jutts'"
-    />
+    <home-asset-repo-vue />
   </div>
 </template>
 
 <script lang="ts">
 import AssetCardVue from "@/components/Home/AssetCard.vue";
+import HomeAssetRepoVue from "@/components/Home/HomeAssetRepo.vue";
 import HomeBanner from "@/components/Home/HomeBanner.vue";
 import HomeNav from "@/components/Home/HomeNav.vue";
 import { Options, Vue } from "vue-class-component";
@@ -19,6 +16,7 @@ import { Options, Vue } from "vue-class-component";
   components: {
     HomeNav,
     HomeBanner,
+    HomeAssetRepoVue,
     AssetCardVue,
   },
 })

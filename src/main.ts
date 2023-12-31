@@ -22,7 +22,7 @@ const vuetify = createVuetify({
           primary: "#460DA2",
           secondary: "#9D88B2",
           accent: "#E8D5B5",
-          bg: "#FEF6FF",
+          bg: "#FCE8FF",
           green: "#FAFF00",
           white: "#FFFFFF",
         },

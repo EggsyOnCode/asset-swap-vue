@@ -23,7 +23,7 @@ export const homeNavLinks: navItem[] = [
 ];
 
 export const CTA = [
-  "Choose an Asset You Wish you buy;",
+  "Choose an Asset You Wish to buy;",
   "Deposit equivalent crypto in your wallet ; ",
   "Have it transferred into your Assets as an NFT!",
 ];

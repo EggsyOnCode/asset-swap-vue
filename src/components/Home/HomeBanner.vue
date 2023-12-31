@@ -5,10 +5,10 @@
     <p class="m-0">
       <span>{{ callToAction[0] }}</span>
     </p>
-    <p class="m-0 pl-16">
+    <p class="m-0 pl-20">
       <span>{{ callToAction[1] }}</span>
     </p>
-    <p class="m-0 pl-36">
+    <p class="m-0 pl-40">
       <span>{{ callToAction[2] }}</span>
     </p>
   </div>

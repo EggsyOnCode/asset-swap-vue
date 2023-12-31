@@ -1,9 +1,9 @@
 <template lang="html">
   <div
-    class="bg-secondary p-2 flex flex-col items-start w-2/12 rounded-[11px] font-garamond h-2/12"
+    class="mr-6 bg-bg p-2 flex flex-col items-start w-full rounded-[11px] font-garamond h-full"
   >
     <img
-      src="../Home/../../assets/logo.png"
+      src="../Home/../../assets/wallpaper.jpg"
       alt="free-img-api"
       class="h-[100px] w-full rounded-[11px]"
     />

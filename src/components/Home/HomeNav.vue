@@ -1,34 +1,45 @@
 <template>
   <div class="p-4 bg-primary flex flex-row items-center justify-around text-lg">
-    <div class="text-white font-garamond">
-      <a v-bind:href="firstNavItem.index.toString()">{{ firstNavItem.name }}</a>
-    </div>
     <div
       class="text-white font-garamond"
-      v-for="(navItem, index) in restNav"
-      :key="index"
+      v-for="navItem in navBar"
+      :key="navItem.index"
     >
-      <a href="index">{{ navItem.name }}</a>
+      <h1
+        class="hover:cursor-pointer"
+        :class="navItem.index === activeItem ? 'text-green' : ''"
+        @click="setActive(navItem)"
+      >
+        {{ navItem.name }}
+      </h1>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { homeNavLinks, navItem } from "@/constants/navList";
-//navItem is an interface
+<script>
+import { homeNavLinks } from "@/constants/navList";
+
 export default {
   data() {
     return {
-      navBar: homeNavLinks as navItem[],
+      navBar: homeNavLinks,
+      activeItem: null,
     };
   },
   computed: {
-    restNav(this: { navBar: navItem[] }): navItem[] {
-      const rest: navItem[] = this.navBar.slice(1);
-      return rest;
+    restNav() {
+      return this.navBar.slice(1);
     },
-    firstNavItem(this: { navBar: navItem[] }): navItem {
+    firstNavItem() {
       return this.navBar[0];
+    },
+  },
+  methods: {
+    isActive(itemIndex) {
+      return this.activeItem === itemIndex;
+    },
+    setActive(item) {
+      this.activeItem = item.index;
     },
   },
 };
