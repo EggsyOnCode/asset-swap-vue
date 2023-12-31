@@ -12,7 +12,7 @@
       <h1>{{ supplier }}</h1>
       <v-chip elevated color="black" theme="light" class="bg-accent rounded-xl">
         <v-icon icon="mdi-cash"></v-icon>
-        {{ price }}
+        <h1 class="text-xl">{{ price }}</h1>
       </v-chip>
     </div>
     <div class="flex flex-col justify-center items-center w-1/3">

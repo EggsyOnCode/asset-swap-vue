@@ -1,4 +1,5 @@
 <template lang="html">
+  <hr class="border-bg" />
   <div
     class="w-full bg-primary text-white font-garamond px-6 pt-4 pb-8 text-2xl"
   >
