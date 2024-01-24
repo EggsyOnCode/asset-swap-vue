@@ -5,7 +5,10 @@ import {
   carNftABI,
   carNftByteCode,
 } from "./contracts";
-const rpcProvider;
+//using the anvil json rpc provider and local testnet ethereum fork
+const rpcProvider = new ethers.providers.JsonRpcProvider(
+  "http://127.0.0.1:8545"
+);
 
 export async function deployOrderManagerContract(
   buyerAddress: string,
