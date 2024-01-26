@@ -9,21 +9,38 @@ import {
 const rpcProvider = new ethers.providers.JsonRpcProvider(
   "http://127.0.0.1:8545"
 );
+import { MetaMaskInpageProvider } from "@metamask/providers";
 
+declare global {
+  interface Window {
+    ethereum?: MetaMaskInpageProvider | any;
+  }
+}
 export async function deployOrderManagerContract(
   buyerAddress: string,
   sellerAddr: string,
   price: string
 ) {
-  const factory = new ContractFactory(orderManagerAbi, orderManagerByteCode);
-  const contract = await factory.deploy(buyerAddress, sellerAddr, price);
-  const contractRef = new ethers.Contract(
-    contract.address,
-    orderManagerAbi,
-    rpcProvider
-  );
-  const orderManager = new OrderManager(contract.address, contractRef, price);
-  return orderManager;
+  if (typeof window.ethereum !== "undefined") {
+    console.log("MetaMask is installed!");
+    const metamask = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const account = metamask.getSigner();
+    const factory = new ContractFactory(
+      orderManagerAbi,
+      orderManagerByteCode,
+      account
+    );
+    const contract = await factory.deploy(buyerAddress, sellerAddr, price);
+    const contractRef = new ethers.Contract(
+      contract.address,
+      orderManagerAbi,
+      rpcProvider
+    );
+    const orderManager = new OrderManager(contract.address, contractRef, price);
+    return orderManager;
+  } else {
+    throw Error("no metamask provider found!");
+  }
 }
 
 class OrderManager {
@@ -53,15 +70,27 @@ export async function deployCarNftContract(
   sellerAddr: string,
   price: string
 ) {
-  const factory = new ContractFactory(carNftABI, carNftByteCode);
-  const contract = await factory.deploy(price, buyerAddress, sellerAddr);
-  const contractRef = new ethers.Contract(
-    contract.address,
-    carNftABI,
-    rpcProvider
-  );
-  const carNft = new CarNFT(contract.address, contractRef, price);
-  return carNft;
+  if (typeof window.ethereum !== "undefined") {
+    console.log("MetaMask is installed!");
+    const metamask = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const account = metamask.getSigner();
+    const factory = new ContractFactory(carNftABI, carNftByteCode);
+    const contract = await factory.deploy(
+      price,
+      buyerAddress,
+      sellerAddr,
+      account
+    );
+    const contractRef = new ethers.Contract(
+      contract.address,
+      carNftABI,
+      rpcProvider
+    );
+    const carNft = new CarNFT(contract.address, contractRef, price);
+    return carNft;
+  } else {
+    throw Error("metamask provider not connected!");
+  }
 }
 
 class CarNFT {
