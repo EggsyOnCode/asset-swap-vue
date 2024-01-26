@@ -8,9 +8,18 @@
     <div
       class="flex flex-col items-start justify-around w-1/3 text-black text-xl"
     >
-      <h1>{{ name }}</h1>
-      <h1>{{ supplier }}</h1>
-      <v-chip elevated color="black" theme="light" class="bg-accent rounded-xl">
+      <h1 class="mt-3">{{ model }}</h1>
+      <h1>Manufacturing Date: {{ manDate }}</h1>
+      <h1>Engine Power: {{ enginePower }}</h1>
+      <h1>Mileage: {{ mileage }}</h1>
+      <h1>Location: {{ location }}</h1>
+      <div class="card-item"><strong>Seller:</strong> {{ seller }}</div>
+      <v-chip
+        elevated
+        color="black"
+        theme="light"
+        class="bg-accent rounded-xl mb-3"
+      >
         <v-icon icon="mdi-cash"></v-icon>
         <h1 class="text-xl">{{ price }}</h1>
       </v-chip>
@@ -29,9 +38,14 @@
 <script lang="ts">
 export default {
   props: {
-    name: String,
+    model: String,
     price: String,
-    supplier: String,
+    enginePower: String,
+    seller: String,
+    mileage: String,
+    location: String,
+    //Manufacturing Date
+    manDate: String,
   },
 };
 </script>

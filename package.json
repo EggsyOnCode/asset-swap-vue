@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@metamask/sdk": "^0.14.2",
+    "axios": "^1.6.7",
     "core-js": "^3.8.3",
     "ethers": "5.7.2",
     "vue": "^3.2.13",
