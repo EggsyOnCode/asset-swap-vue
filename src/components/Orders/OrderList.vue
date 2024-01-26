@@ -13,21 +13,10 @@
 </template>
 <script lang="ts">
 import OrderCardVue from "./OrderCard.vue";
-import axios from "axios";
-
-interface item {
-  model: string;
-  price: string;
-}
 
 export default {
   components: {
     OrderCardVue,
-  },
-  data() {
-    return {
-      items: [], // Store the data from the API response
-    };
   },
 };
 </script>

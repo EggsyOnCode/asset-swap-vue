@@ -7,16 +7,16 @@
       alt="free-img-api"
       class="h-[100px] w-full rounded-[11px] bg-primary"
     />
-    <h1>{{ model }}</h1>
-    <h1>Manufacturing Date: {{ manDate }}</h1>
-    <h1>Engine Power: {{ enginePower }}</h1>
-    <h1>Mileage: {{ mileage }}</h1>
-    <h1>Location: {{ location }}</h1>
+    <h1 class="font-bold text-2xl">{{ model }}</h1>
+    <div class="card-item">
+      <strong>Manufacturing Date:</strong> {{ manufacturingDate }}
+    </div>
+    <div class="card-item">
+      <strong>Engine Power:</strong> {{ enginePower }}
+    </div>
+    <div class="card-item"><strong>Mileage:</strong> {{ mileage }}</div>
+    <div class="card-item"><strong>Location:</strong> {{ location }}</div>
     <div class="card-item"><strong>Seller:</strong> {{ seller }}</div>
-    <v-chip elevated color="black" theme="light" class="bg-accent rounded-xl">
-      <v-icon icon="mdi-cash"></v-icon>
-      <h1 class="text-xl">{{ price }}</h1>
-    </v-chip>
     <div class="flex flex-row justify-between items-start w-full">
       <v-chip elevated color="black" theme="light" class="bg-accent rounded-xl">
         <v-icon icon="mdi-cash"></v-icon>
@@ -36,10 +36,10 @@ export default {
     price: String,
     enginePower: String,
     seller: String,
-    mileage: String,
+    mileage: Number,
     location: String,
     //Manufacturing Date
-    manDate: String,
+    manufacturingDate: String,
   },
   data() {
     return {};
