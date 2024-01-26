@@ -17,7 +17,7 @@ export const homeNavLinks: navItem[] = [
     index: 3,
   },
   {
-    name: "Wallet",
+    name: "Login",
     index: 4,
   },
 ];

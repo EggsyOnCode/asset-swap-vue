@@ -18,6 +18,7 @@
   </div>
 </template>
 <script lang="js">
+import { endPoints } from "@/constants/apiEndpoints";
 import AssetCardVue from "./AssetCard.vue";
 import axios from "axios";
 
@@ -42,7 +43,7 @@ export default {
   },
   async mounted() {
   try {
-    const response = await axios.get('http://127.0.0.1:3000/user-assets');
+    const response = await axios.get(endPoints.homeAssets);
     // Update the 'items' data with the received results
     this.items = response.data;
     console.log(this.items);

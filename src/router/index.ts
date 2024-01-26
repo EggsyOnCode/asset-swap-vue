@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import OrdersViewVue from "@/views/OrdersView.vue";
 import CreateOrderVue from "@/views/CreateOrder.vue";
+import LoginScreenVue from "@/views/LoginScreen.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,6 +10,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "home",
     component: HomeView,
   },
+
   {
     path: "/createOrder",
     name: "orderCreation",
@@ -21,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: OrdersViewVue,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginScreenVue,
   },
 ];
 
