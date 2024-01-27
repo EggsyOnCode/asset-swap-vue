@@ -20,20 +20,41 @@
         type="password"
         class="w-1/2"
       ></v-text-field>
-      <v-btn depressed elevation="2" raised class="bg-accent">Login</v-btn>
+      <v-btn depressed elevation="2" raised class="bg-accent" @click="login"
+        >Login</v-btn
+      >
     </div>
   </div>
 </template>
 <script lang="ts">
 import axios from "axios";
-export default {
+import { endPoints } from "@/constants/apiEndpoints";
+import { defineComponent } from "vue";
+export default defineComponent({
   data() {
     return {
       userName: "",
       pwd: "",
     };
   },
-  methods: {},
-};
+  methods: {
+    async login() {
+      try {
+        const data = {
+          username: this.userName,
+          password: this.pwd,
+        };
+        const response = await axios.post(endPoints.login, data);
+        if (response.status === 200) {
+          alert("User loggedIn successfully!");
+        } else {
+          alert("Incorrect Credentials!");
+        }
+      } catch (error) {
+        throw new Error("Error occurred in login");
+      }
+    },
+  },
+});
 </script>
 <style lang=""></style>

@@ -20,14 +20,17 @@
         type="password"
         class="w-1/2"
       ></v-text-field>
-      <v-btn depressed elevation="2" raised class="bg-accent">Sign Up</v-btn>
+      <v-btn depressed elevation="2" @click="signUp" raised class="bg-accent"
+        >Sign Up</v-btn
+      >
     </div>
   </div>
 </template>
 <script lang="ts">
 import axios from "axios";
 import { endPoints } from "@/constants/apiEndpoints";
-export default {
+import { defineComponent } from "vue";
+export default defineComponent({
   data() {
     return {
       userName: "",
@@ -37,17 +40,21 @@ export default {
   methods: {
     async signUp() {
       try {
-        const response = await axios.post(endPoints.userSignUp);
-        if (response.status == 201) {
-          alert("user created successfully!");
+        const data = {
+          username: this.userName,
+          password: this.pwd,
+        };
+        const response = await axios.post(endPoints.userSignUp, data);
+        if (response.status === 201) {
+          alert("User created successfully!");
         } else {
-          alert("user couldn't be created!");
+          alert("User couldn't be created!");
         }
       } catch (error) {
-        throw Error("error occured in signup");
+        throw new Error("Error occurred in signup");
       }
     },
   },
-};
+});
 </script>
 <style lang=""></style>
