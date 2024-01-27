@@ -3,7 +3,7 @@
     <div
       class="mx-[25%] p-10 flex flex-col items-start justify-start h-full w-full"
     >
-      <h1 class="text-3xl font-semibold pb-6">~Create An Order~</h1>
+      <h1 class="text-3xl font-semibold pb-6">~Advertise An Asset~</h1>
       <hr class="border-black w-full border-r-2" />
       <div
         class="bg-secondary w-full my-4 h-[30%] rounded-lg flex flex-col items-center justify-center"

@@ -1,9 +1,11 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import OrdersViewVue from "@/views/OrdersView.vue";
+import OrdersViewVue from "@/views/BuyingOrders.vue";
 import CreateOrderVue from "@/views/CreateOrder.vue";
 import LoginScreenVue from "@/views/LoginScreen.vue";
 import SignUpVue from "@/views/SignUp.vue";
+import SellingOrdersVue from "@/views/SellingOrders.vue";
+import BuyingOrdersVue from "@/views/BuyingOrders.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,12 +20,12 @@ const routes: Array<RouteRecordRaw> = [
     component: CreateOrderVue,
   },
   {
-    path: "/orders",
-    name: "orders",
+    path: "/orders/buying",
+    name: "buyingOrders",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: OrdersViewVue,
+    component: BuyingOrdersVue,
   },
   {
     path: "/login",
@@ -34,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/signUp",
     name: "singUp",
     component: SignUpVue,
+  },
+  {
+    path: "/orders/selling",
+    name: "sellingOrders",
+    component: SellingOrdersVue,
   },
 ];
 

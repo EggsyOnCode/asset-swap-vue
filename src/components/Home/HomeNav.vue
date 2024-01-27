@@ -60,7 +60,7 @@ export default {
     return {
       navBar: homeNavLinks,
       activeItem: null,
-      ordersOptions: ["View Orders", "Create An Order"],
+      ordersOptions: ["Buying Orders", "Selling Orders", "Advertise An Asset"],
       authOptions: ["Login", "SignUp"],
     };
   },
@@ -97,9 +97,12 @@ export default {
     orderNav(index) {
       switch (index) {
         case 0:
-          this.$router.push("/orders");
+          this.$router.push("/orders/buying");
           break;
         case 1:
+          this.$router.push("/orders/selling");
+          break;
+        case 2:
           this.$router.push("/createOrder");
           break;
         default:
