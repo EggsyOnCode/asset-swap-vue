@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import OrdersViewVue from "@/views/OrdersView.vue";
 import CreateOrderVue from "@/views/CreateOrder.vue";
 import LoginScreenVue from "@/views/LoginScreen.vue";
+import SignUpVue from "@/views/SignUp.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -28,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     name: "Login",
     component: LoginScreenVue,
+  },
+  {
+    path: "/signUp",
+    name: "singUp",
+    component: SignUpVue,
   },
 ];
 

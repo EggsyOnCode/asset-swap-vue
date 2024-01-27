@@ -17,7 +17,7 @@ export const homeNavLinks: navItem[] = [
     index: 3,
   },
   {
-    name: "Login",
+    name: "Auth",
     index: 4,
   },
 ];

@@ -33,9 +33,7 @@ export default {
       pwd: "",
     };
   },
-  methods: {
-    async loginUser() {},
-  },
+  methods: {},
 };
 </script>
 <style lang=""></style>
