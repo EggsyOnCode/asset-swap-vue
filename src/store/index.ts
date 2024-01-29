@@ -1,8 +1,11 @@
 import { createStore } from "vuex";
-
+interface User {
+  userId: number;
+  userName: string;
+}
 export default createStore({
   state: {
-    user: {},
+    user: {} as User,
     jwtToken: "",
   },
   mutations: {
@@ -15,5 +18,15 @@ export default createStore({
   },
   actions: {},
   modules: {},
-  getters: {},
+  getters: {
+    getToken(state) {
+      return state.jwtToken;
+    },
+    getUserId(state) {
+      return state.user.userId;
+    },
+    getUsername(state) {
+      return state.user.userName;
+    },
+  },
 });
