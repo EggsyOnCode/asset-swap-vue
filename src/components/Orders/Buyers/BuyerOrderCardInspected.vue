@@ -13,7 +13,7 @@
       <h1>Engine Power: {{ enginePower }}</h1>
       <h1>Mileage: {{ mileage }}</h1>
       <h1>Location: {{ location }}</h1>
-      <div class="card-item"><strong>Buyer:</strong> {{ buyer }}</div>
+      <div class="card-item"><strong>Seller:</strong> {{ seller }}</div>
       <v-chip
         elevated
         color="black"
@@ -81,7 +81,7 @@ export default {
     model: String,
     price: String,
     enginePower: String,
-    buyer: String,
+    seller: String,
     mileage: String,
     location: String,
     //Manufacturing Date
