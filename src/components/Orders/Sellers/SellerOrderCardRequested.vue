@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
     <img
-      src="../Orders/../../assets/wallpaper.jpg"
+      src="../../../assets/wallpaper.jpg"
       alt="free-img-api"
       class="w-1/3 m-3 rounded-lg"
     />
@@ -13,7 +13,7 @@
       <h1>Engine Power: {{ enginePower }}</h1>
       <h1>Mileage: {{ mileage }}</h1>
       <h1>Location: {{ location }}</h1>
-      <div class="card-item"><strong>Seller:</strong> {{ seller }}</div>
+      <div class="card-item"><strong>Buyer:</strong> {{ buyer }}</div>
       <v-chip
         elevated
         color="black"
@@ -28,10 +28,6 @@
       <button class="py-1 px-4 rounded-[11px] bg-green flex-shrink-0 font-bold">
         Approve
       </button>
-      <h1 class="m-3">Or</h1>
-      <button class="py-1 px-4 rounded-[11px] bg-green flex-shrink-0 font-bold">
-        Complete
-      </button>
     </div>
   </div>
 </template>
@@ -41,7 +37,7 @@ export default {
     model: String,
     price: String,
     enginePower: String,
-    seller: String,
+    buyer: String,
     mileage: String,
     location: String,
     //Manufacturing Date

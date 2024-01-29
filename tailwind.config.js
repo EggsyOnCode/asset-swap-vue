@@ -10,6 +10,7 @@ module.exports = {
       green: "#FAFF00",
       black: "#000000",
       white: "#FFFFFF",
+      red: "#F10E1B",
     },
     fontFamily: {
       garamond: ["EB Garamond", "sans-serif"],
