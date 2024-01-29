@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="mt-6 flex flex-col items-center">
-    <OrderCardVue
+    <BuyerOrderCardInspectedVue
       :price="'98.89'"
       :seller="'ToyotaInspected'"
       :mileage="'10000'"
@@ -12,11 +12,11 @@
   </div>
 </template>
 <script lang="ts">
-import OrderCardVue from "../../OrderCard.vue";
+import BuyerOrderCardInspectedVue from "../BuyerOrderCardInspected.vue";
 
 export default {
   components: {
-    OrderCardVue,
+    BuyerOrderCardInspectedVue,
   },
 };
 </script>
