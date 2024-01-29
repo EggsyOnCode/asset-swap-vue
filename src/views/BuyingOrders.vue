@@ -24,9 +24,9 @@ import SearchBarVue from "@/components/Orders/SearchBar.vue";
 import { StatesOrder } from "@/store/constants";
 import { defineComponent } from "vue";
 import ChipVue from "@/components/Orders/Chip.vue";
-import BuyingOrderListRequestedVue from "@/components/Orders/BuyingOrderListRequested.vue";
-import BuyingOrdersListInspectedVue from "@/components/Orders/BuyingOrdersListInspected.vue";
-import BuyingOrdersListCompletedVue from "@/components/Orders/BuyingOrdersListCompleted.vue";
+import BuyingOrderListRequestedVue from "@/components/Orders/Buyers/Views/BuyingOrderListRequested.vue";
+import BuyingOrdersListInspectedVue from "@/components/Orders/Buyers/Views/BuyingOrdersListInspected.vue";
+import BuyingOrdersListCompletedVue from "@/components/Orders/Buyers/Views/BuyingOrdersListCompleted.vue";
 export default defineComponent({
   components: {
     SearchBarVue,

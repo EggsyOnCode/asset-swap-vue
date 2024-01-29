@@ -2,8 +2,7 @@
   <div class="mt-6 flex flex-col items-center">
     <OrderCardVue
       :price="'98.89'"
-      :seller="'Toyota'"
-      :mileage="'10000'"
+      :mileage="'10000 completed'"
       :manufacturing-date="'2022-09-01'"
       :model="'Buggati 2'"
       :location="'Gosal\'s Home'"
@@ -12,7 +11,7 @@
   </div>
 </template>
 <script lang="ts">
-import OrderCardVue from "./OrderCard.vue";
+import OrderCardVue from "../../OrderCard.vue";
 
 export default {
   components: {
