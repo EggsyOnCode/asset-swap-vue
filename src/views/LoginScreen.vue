@@ -30,6 +30,8 @@
 import axios from "axios";
 import { endPoints } from "@/constants/apiEndpoints";
 import { defineComponent } from "vue";
+import store from "@/store";
+
 export default defineComponent({
   data() {
     return {
@@ -45,6 +47,12 @@ export default defineComponent({
           password: this.pwd,
         };
         const response = await axios.post(endPoints.login, data);
+        const user = {
+          userName: response.data.userName,
+          userId: response.data.userId,
+        };
+        store.commit("setUser", user);
+        store.commit("setJwtAccessToken", response.data.jwt);
         if (response.status === 200) {
           alert("User loggedIn successfully!");
         } else {
