@@ -20,6 +20,7 @@ import SellerOrderCardRequestedVue from "../SellerOrderCardRequested.vue";
 import store from "@/store";
 import { useStore } from "vuex";
 import { defineComponent } from "vue";
+import { endPoints } from "@/constants/apiEndpoints";
 interface SellerOrder {
   asset: any;
   buyer: any;
@@ -60,11 +61,14 @@ export default defineComponent({
     // Replace 'yourBearerToken' with the actual bearer token
     const token = store.getters.getToken;
     axios
-      .get(`http://127.0.0.1:5000/orders/seller/${store.getters.getUserId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(
+        `${endPoints.ordersUrl}/orders/seller/requested/${store.getters.getUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         // Handle the response data and render order cards
         // For example, if the response data is an array of orders
