@@ -85,6 +85,7 @@ export default {
     location: String,
     //Manufacturing Date
     manDate: String,
+    orderId: Number,
   },
   data() {
     return {
