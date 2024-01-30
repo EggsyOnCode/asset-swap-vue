@@ -43,9 +43,9 @@ export default {
   },
   async mounted() {
   try {
-    const response = await axios.get(endPoints.homeAssets);
+    const response = await axios.get(endPoints.advertizedAssets);
     // Update the 'items' data with the received results
-    this.items = response.data;
+    this.items = response.data.items;
     console.log(this.items);
   } catch (error) {
     console.error('Error fetching data:', error);
