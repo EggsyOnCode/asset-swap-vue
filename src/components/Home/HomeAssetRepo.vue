@@ -13,6 +13,8 @@
         :model="item.asset.model"
         :location="item.asset.location"
         :engine-power="item.asset.enginePower"
+        :assetId="item.assetId"
+        :sellerId="item.userId"
       />
     </div>
   </div>

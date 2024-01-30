@@ -23,13 +23,20 @@
         {{ price }}
       </v-chip>
 
-      <button class="py-1 px-4 rounded-[11px] bg-accent flex-shrink-0">
+      <button
+        @click="createOrder"
+        class="py-1 px-4 rounded-[11px] bg-accent flex-shrink-0"
+      >
         Order
       </button>
     </div>
   </div>
 </template>
 <script lang="js">
+import store from '@/store';
+import axios from 'axios';
+
+
 export default {
     props: {
     model: String,
@@ -40,11 +47,40 @@ export default {
     location: String,
     //Manufacturing Date
     manufacturingDate: String,
+    assetId: String,
+    sellerId: String,
   },
   data() {
     return {};
   },
   components: {
   },
+  methods: {
+    async createOrder(){
+      try {
+        const payload = {
+          sellerId: this.$props.sellerId,
+            buyerId: store.getters.getUserId,
+            assetId: this.$props.assetId,
+        };
+
+        // Replace 'yourBearerToken' with the actual bearer token
+        const token = store.getters.getToken;
+
+        const response = await axios.post('http://127.0.0.1:5000/orders', payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Handle the response as needed
+        if(response.status === 201)alert('Order created successfully');
+        else{
+          alert("order not created!");
+        }
+      } catch (error) {
+        console.error('Error creating order:', error);
+      }
+    }
+  }
 };
 </script>
