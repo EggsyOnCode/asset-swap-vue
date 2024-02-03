@@ -194,7 +194,15 @@ class CarNFT {
 
   async resetOwner(address: string) {
     await this.init();
-    await this.contract.resetOwner(address);
+    const signedContract = this.contract.connect(this.signer);
+    try {
+      // Send transaction to deposit funds
+      const transactionResponse = await signedContract.resetOwner(address);
+      await transactionResponse.wait();
+      console.log("Owner Reset successfully");
+    } catch (error) {
+      console.error("Error resetting the owner:", error);
+    }
   }
   // tokenUri is the ipfs store of the details of the asset
   async mintNFT(to: string, tokenUri: string) {

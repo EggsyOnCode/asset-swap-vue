@@ -165,7 +165,7 @@ export default defineComponent({
       console.log(nftContract.contractAddress);
 
       await nftContract.mintNFT(buyerAddr, "hello World");
-      // nftContract.resetOwner(buyerAddr);
+      await nftContract.resetOwner(buyerAddr);
     },
   },
 });
