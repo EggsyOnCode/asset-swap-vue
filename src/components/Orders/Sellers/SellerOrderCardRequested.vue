@@ -36,7 +36,10 @@
 </template>
 <script lang="ts">
 import store from "@/store";
-import { deployOrderManagerContract } from "@/utils/contractInteraction";
+import {
+  deployOrderManagerContract,
+  pkrToEth,
+} from "@/utils/contractInteraction";
 import axios from "axios";
 import { endPoints } from "@/constants/apiEndpoints";
 import { defineComponent } from "vue";
@@ -45,7 +48,10 @@ import { State } from "@/store/constants";
 export default defineComponent({
   props: {
     model: String,
-    price: String,
+    price: {
+      type: String,
+      required: true,
+    },
     enginePower: String,
     buyer: String,
     mileage: String,
@@ -60,10 +66,12 @@ export default defineComponent({
       const sellerAddr = await store.getters.getUserWallet;
       console.log(sellerAddr);
 
+      const priceEth = await pkrToEth(this.$props.price);
+
       const orderManager = await deployOrderManagerContract(
         this.$props.buyerWalletAddress,
         sellerAddr,
-        "0.001"
+        priceEth.toString()
       );
       const token = store.getters.getToken;
       const data = {

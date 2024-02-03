@@ -83,15 +83,14 @@ export default {
     buyer: String,
     mileage: String,
     location: String,
+    state: String,
     //Manufacturing Date
     manDate: String,
     orderId: Number,
     buyerWalletAddress: String,
   },
   data() {
-    return {
-      state: "seller has approved",
-    };
+    return {};
   },
 };
 </script>

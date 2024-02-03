@@ -10,12 +10,24 @@ const rpcProvider = new ethers.providers.JsonRpcProvider(
   "http://127.0.0.1:8545"
 );
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import axios from "axios";
 
 declare global {
   interface Window {
     ethereum?: MetaMaskInpageProvider | any;
   }
 }
+
+export async function pkrToEth(pkr: string) {
+  const pkrEthResponse = await axios.get(
+    "https://api.coinbase.com/v2/exchange-rates?currency=ETH"
+  );
+  const rate = pkrEthResponse.data.data.rates["PKR"];
+  const ethPrice: number = parseFloat(pkr) / rate;
+  const roundedEthPrice: number = parseFloat(ethPrice.toFixed(3));
+  return roundedEthPrice;
+}
+
 export async function deployOrderManagerContract(
   buyerAddress: string | undefined,
   sellerAddr: string,
@@ -42,16 +54,7 @@ export async function deployOrderManagerContract(
       );
       const tPrice = ethers.utils.parseUnits(price, 18);
       const contract = await factory.deploy(buyerAddress, sellerAddr, tPrice);
-      const contractRef = new ethers.Contract(
-        contract.address,
-        orderManagerAbi,
-        rpcProvider
-      );
-      const orderManager = new OrderManager(
-        contract.address,
-        contractRef,
-        price
-      );
+      const orderManager = new OrderManager(contract.address, price);
       return orderManager;
     } else {
       throw Error("buyer and connect wallet address are diff");
@@ -61,25 +64,59 @@ export async function deployOrderManagerContract(
   }
 }
 
-class OrderManager {
-  constructor(
-    public contractAddress: string,
-    private contractRef: ethers.Contract,
-    private price: string
-  ) {}
+export class OrderManager {
+  private contract: ethers.Contract;
+  private signer: ethers.Signer;
+
+  constructor(public contractAddress: string, private price: string) {
+    this.contract = new ethers.Contract(
+      contractAddress,
+      orderManagerAbi,
+      rpcProvider
+    );
+    this.signer = new ethers.VoidSigner("0x0");
+  }
+
+  async init() {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    const metamask = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const walletAddress = accounts[0];
+    this.signer = await metamask.getSigner(walletAddress);
+  }
 
   async getBalance() {
-    const balance = this.contractRef.getBalance();
-    return balance / 1e18;
+    const balance = await this.contract.getBalance();
+    return balance / 1e18; // Convert from wei to ether
   }
 
   async deposit() {
-    const options = { value: ethers.utils.parseEther(this.price) };
-    await this.contractRef.deposit(options);
+    await this.init();
+    const pkrEthResponse = await axios.get(
+      "https://api.coinbase.com/v2/exchange-rates?currency=ETH"
+    );
+    const rate = pkrEthResponse.data.data.rates["PKR"];
+    const ethPrice: number = parseFloat(this.price) / rate;
+    const roundedEthPrice: number = parseFloat(ethPrice.toFixed(3));
+    console.log(roundedEthPrice);
+    const options = {
+      value: ethers.utils.parseEther(roundedEthPrice.toString()),
+    };
+
+    const signedContract = this.contract.connect(this.signer);
+    try {
+      // Send transaction to deposit funds
+      const transactionResponse = await signedContract.deposit(options);
+      await transactionResponse.wait();
+      console.log("Funds deposited successfully");
+    } catch (error) {
+      console.error("Error depositing funds:", error);
+    }
   }
 
   async withdraw() {
-    await this.contractRef.withdraw();
+    await this.contract.withdraw();
   }
 }
 

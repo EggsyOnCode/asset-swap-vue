@@ -11,6 +11,8 @@
       :engine-power="asset.asset.enginePower"
       :seller="asset.seller.username"
       :orderId="asset.orderId"
+      :orderManagerContractAddress="asset.orderManager"
+      :state="asset.asset.state"
     />
   </div>
 </template>
@@ -25,6 +27,8 @@ interface BuyerOrder {
   asset: any;
   seller: any;
   orderId: number;
+  orderManager: string;
+  nftContractAddress: string;
 }
 export default defineComponent({
   components: {
@@ -52,9 +56,12 @@ export default defineComponent({
           asset: item.asset,
           seller: item.seller,
           orderId: item.orderId,
+          orderManager: item.orderManager,
+          nftContract: item.nftContract,
         };
       });
       this.sellerOrders = transformedOrders;
+      console.log("seller orders", this.sellerOrders);
     },
   },
   mounted() {
@@ -74,8 +81,8 @@ export default defineComponent({
         // For example, if the response data is an array of orders
         // you can loop through the orders and render them as cards
         const orders = response.data;
-        console.log(orders);
         this.transformResponseData(response.data);
+
         // Render the order cards here
       })
       .catch((error) => {

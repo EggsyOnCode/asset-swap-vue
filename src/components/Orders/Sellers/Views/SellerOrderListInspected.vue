@@ -11,6 +11,7 @@
       :engine-power="asset.asset.enginePower"
       :buyer="asset.buyer.username"
       :orderId="asset.orderId"
+      :state="asset.asset.state"
     />
   </div>
 </template>

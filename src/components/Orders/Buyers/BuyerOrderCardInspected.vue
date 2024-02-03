@@ -29,6 +29,7 @@
         v-if="state === 'seller has approved'"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
         title="Deposit funds in the contract equivalent to the price of the asset"
+        @click="depositFunds"
       >
         Deposit Funds
       </button>
@@ -76,23 +77,43 @@
   </div>
 </template>
 <script lang="ts">
-export default {
+import { OrderManager } from "@/utils/contractInteraction";
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     model: String,
-    price: String,
+    price: {
+      type: String,
+      required: true,
+    },
     enginePower: String,
     seller: String,
+    state: String,
     mileage: String,
     location: String,
     //Manufacturing Date
     manDate: String,
     orderId: Number,
+    orderManagerContractAddress: {
+      type: String,
+      required: true,
+    },
   },
   data() {
-    return {
-      state: "buyer has completed inspection",
-    };
+    return {};
   },
-};
+  mounted() {
+    console.log(this.$props.orderManagerContractAddress);
+  },
+  methods: {
+    async depositFunds() {
+      const orderManager = new OrderManager(
+        this.$props.orderManagerContractAddress,
+        this.$props.price
+      );
+      await orderManager.deposit();
+    },
+  },
+});
 </script>
 <style lang=""></style>
