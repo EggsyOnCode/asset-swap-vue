@@ -12,6 +12,7 @@
       :buyer="asset.buyer.username"
       :orderId="asset.orderId"
       :state="asset.asset.state"
+      :buyerWalletAddress="asset.buyer.walletAddress"
     />
   </div>
 </template>

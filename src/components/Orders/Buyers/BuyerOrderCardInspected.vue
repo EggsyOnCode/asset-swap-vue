@@ -58,8 +58,8 @@
           'py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-red text-black':
             state !== 'buyer has completed inspection',
         }"
-        title="Will be enabled once the order has been inspected by the buyer"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold"
+        @click="confirmOrder"
       >
         Confirm the Order
       </button>
@@ -69,7 +69,7 @@
           'py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-red text-black':
             state !== 'buyer has completed inspection',
         }"
-        title="Will be enabled once the order has been inspected by the buyer"
+        title="Will Cancel the Order, don't cancel during inspection"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold"
       >
         Cancel the Order
@@ -156,6 +156,27 @@ export default defineComponent({
         alert("order couldn't be marked inspected");
       } else {
         alert("order marked inspected successfully!");
+      }
+    },
+    async confirmOrder() {
+      const data = {
+        state: State.B_CONFIRMED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be confirmed");
+      } else {
+        alert("order marked confirmed from buyer successfully!");
       }
     },
   },

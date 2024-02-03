@@ -18,6 +18,14 @@ declare global {
   }
 }
 
+function isValidAddress(address: string) {
+  return ethers.utils.isAddress(address);
+}
+
+function formatAddress(address: string) {
+  return ethers.utils.getAddress(address);
+}
+
 export async function pkrToEth(pkr: string) {
   const pkrEthResponse = await axios.get(
     "https://api.coinbase.com/v2/exchange-rates?currency=ETH"
@@ -116,58 +124,94 @@ export class OrderManager {
   }
 
   async withdraw() {
+    await this.init();
     await this.contract.withdraw();
   }
 }
 
 export async function deployCarNftContract(
+  price: string,
   buyerAddress: string,
-  sellerAddr: string,
-  price: string
+  sellerAddr: string
 ) {
   if (typeof window.ethereum !== "undefined") {
     console.log("MetaMask is installed!");
-    const metamask = new ethers.providers.Web3Provider(window.ethereum, "any");
-    const account = metamask.getSigner();
-    const factory = new ContractFactory(carNftABI, carNftByteCode);
-    const contract = await factory.deploy(
-      price,
-      buyerAddress,
-      sellerAddr,
-      account
-    );
-    const contractRef = new ethers.Contract(
-      contract.address,
-      carNftABI,
-      rpcProvider
-    );
-    const carNft = new CarNFT(contract.address, contractRef, price);
-    return carNft;
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    console.log(accounts[0], buyerAddress, sellerAddr);
+    console.log(isValidAddress(sellerAddr), isValidAddress(buyerAddress));
+    if (accounts[0].toString() == sellerAddr.toLowerCase()) {
+      const metamask = new ethers.providers.Web3Provider(
+        window.ethereum,
+        "any"
+      );
+      const account = await metamask.getSigner();
+
+      const factory = new ContractFactory(carNftABI, carNftByteCode, account);
+
+      const tPrice = ethers.utils.parseUnits(price, 18);
+
+      console.log(accounts[0], buyerAddress, sellerAddr);
+      const contract = await factory.deploy(tPrice, buyerAddress, sellerAddr);
+
+      const carNft = new CarNFT(contract.address, price);
+      return carNft;
+    } else {
+      throw Error("buyer and connect wallet address are diff");
+    }
   } else {
-    throw Error("metamask provider not connected!");
+    throw Error("no metamask provider found!");
   }
 }
 
 class CarNFT {
-  constructor(
-    public contractAddress: string,
-    private contractRef: ethers.Contract,
-    private price: string
-  ) {}
+  private contract: ethers.Contract;
+  private signer: ethers.Signer;
+
+  constructor(public contractAddress: string, private price: string) {
+    this.contract = new ethers.Contract(
+      contractAddress,
+      carNftABI,
+      rpcProvider
+    );
+    this.signer = new ethers.VoidSigner("0x0");
+  }
 
   async getOwner() {
-    await this.contractRef.getOwner();
+    await this.contract.getOwner();
+  }
+
+  async init() {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    const metamask = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const walletAddress = accounts[0];
+    this.signer = await metamask.getSigner(walletAddress);
+    this.contract = this.contract.connect(this.signer);
   }
 
   async resetOwner(address: string) {
-    await this.contractRef.resetOwner(address);
+    await this.init();
+    await this.contract.resetOwner(address);
   }
   // tokenUri is the ipfs store of the details of the asset
-  async mint(to: string, tokenUri: string) {
-    await this.contractRef.mint(to, tokenUri);
+  async mintNFT(to: string, tokenUri: string) {
+    await this.init();
+
+    const signedContract = this.contract.connect(this.signer);
+    try {
+      // Send transaction to deposit funds
+      const transactionResponse = await signedContract.mint(to, tokenUri);
+      await transactionResponse.wait();
+      console.log("NFT minted successfully");
+    } catch (error) {
+      console.error("Error minting nft:", error);
+    }
   }
 
   async tokenTransfer(from: string, to: string, tokenId: number) {
-    await this.contractRef.tokenTransfer(from, to, tokenId);
+    await this.contract.tokenTransfer(from, to, tokenId);
   }
 }

@@ -74,6 +74,7 @@
         }"
         title="Will be enabled once the order has been confirmed by the buyer"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold"
+        @click="confirmOrder"
       >
         Confirm the Order
       </button>
@@ -86,10 +87,14 @@ import axios from "axios";
 import { endPoints } from "@/constants/apiEndpoints";
 import store from "@/store";
 import { defineComponent } from "vue";
+import { deployCarNftContract, pkrToEth } from "@/utils/contractInteraction";
 export default defineComponent({
   props: {
     model: String,
-    price: String,
+    price: {
+      type: String,
+      required: true,
+    },
     enginePower: String,
     buyer: String,
     mileage: String,
@@ -98,7 +103,10 @@ export default defineComponent({
     //Manufacturing Date
     manDate: String,
     orderId: Number,
-    buyerWalletAddress: String,
+    buyerWalletAddress: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {};
@@ -124,6 +132,40 @@ export default defineComponent({
       } else {
         alert("order marked inspected successfully!");
       }
+    },
+    async confirmOrder() {
+      const sellerAddr = await store.getters.getUserWallet;
+      const buyerAddr = this.$props.buyerWalletAddress;
+
+      const priceEth = await pkrToEth(this.$props.price);
+
+      const nftContract = await deployCarNftContract(
+        priceEth.toString(),
+        this.$props.buyerWalletAddress,
+        sellerAddr
+      );
+      const token = store.getters.getToken;
+      const data = {
+        nftContract: nftContract.contractAddress,
+      };
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("nft contract couldn't be created");
+      } else {
+        alert("nft contract succesfully created!");
+      }
+      console.log(nftContract.contractAddress);
+
+      await nftContract.mintNFT(buyerAddr, "hello World");
+      // nftContract.resetOwner(buyerAddr);
     },
   },
 });
