@@ -43,6 +43,7 @@ export default {
     //Manufacturing Date
     manDate: String,
     orderId: Number,
+    buyerWalletAddress: String,
   },
 };
 </script>

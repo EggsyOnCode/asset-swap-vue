@@ -4,4 +4,5 @@ export const endPoints = {
   advertizedAssets: "http://127.0.0.1:3000/advertized-assets",
   userSignUp: "http://127.0.0.1:3000/users",
   login: "http://127.0.0.1:3000/auth/login",
+  orderManagerContract: "http://127.0.0.1:5000/orders",
 };

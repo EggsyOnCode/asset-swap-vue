@@ -17,7 +17,7 @@ declare global {
   }
 }
 export async function deployOrderManagerContract(
-  buyerAddress: string,
+  buyerAddress: string | undefined,
   sellerAddr: string,
   price: string
 ) {
@@ -26,10 +26,10 @@ export async function deployOrderManagerContract(
     const accounts = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
-    buyerAddress = buyerAddress.toLowerCase();
-    // console.log(accounts[0], buyerAddress, sellerAddr);
-    // console.log(typeof accounts[0], typeof buyerAddress);
-    if (accounts[0].toString() == buyerAddress) {
+    sellerAddr = sellerAddr.toLowerCase();
+    console.log(accounts[0], buyerAddress, sellerAddr);
+    console.log(typeof accounts[0], typeof sellerAddr);
+    if (accounts[0].toString() == sellerAddr) {
       const metamask = new ethers.providers.Web3Provider(
         window.ethereum,
         "any"

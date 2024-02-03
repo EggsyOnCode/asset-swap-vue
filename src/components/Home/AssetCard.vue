@@ -61,30 +61,36 @@ export default {
   methods: {
     async createOrder(){
       try {
-        // const payload = {
-        //   sellerId: this.$props.sellerId,
-        //     buyerId: store.getters.getUserId,
-        //     assetId: this.$props.assetId,
-        // };
+        const payload = {
+          sellerId: this.$props.sellerId,
+          buyerId: store.getters.getUserId,
+          assetId: this.$props.assetId,
+        };
 
-        // // Replace 'yourBearerToken' with the actual bearer token
-        // const token = store.getters.getToken;
+        // Replace 'yourBearerToken' with the actual bearer token
+        const token = store.getters.getToken;
 
-        // const response = await axios.post(`${endPoints.ordersUrl}/orders`, payload, {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // });
-        // // Handle the response as needed
-        // if(response.status === 201)alert('Order created successfully');
-        // else{
-        //   alert("order not created!");
-        // }
-        const buyerAddr = store.getters.getUserWallet;
-        const orderManager = await deployOrderManagerContract(buyerAddr, this.$props.sellerWalletAddress, '0.001');
+        const response = await axios.post(`${endPoints.ordersUrl}/orders`, payload, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 201) {
+          alert('Order created successfully');
+        } else {
+          alert('Order not created!');
+        }
       } catch (error) {
-        console.error('Error creating order:', error);
+        // Check if the error is from the server response
+        if (error.response && error.response.status === 409) {
+          alert('Order already exists');
+        } else {
+          console.error('Error creating order:', error);
+          alert('Order not created!');
+        }
       }
+
     }
   }
 };

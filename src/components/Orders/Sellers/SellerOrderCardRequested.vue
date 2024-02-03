@@ -25,14 +25,24 @@
       </v-chip>
     </div>
     <div class="flex flex-col justify-center items-center w-1/3">
-      <button class="py-1 px-4 rounded-[11px] bg-green flex-shrink-0 font-bold">
+      <button
+        @click="createOrderContract"
+        class="py-1 px-4 rounded-[11px] bg-green flex-shrink-0 font-bold"
+      >
         Approve
       </button>
     </div>
   </div>
 </template>
 <script lang="ts">
-export default {
+import store from "@/store";
+import { deployOrderManagerContract } from "@/utils/contractInteraction";
+import axios from "axios";
+import { endPoints } from "@/constants/apiEndpoints";
+import { defineComponent } from "vue";
+import { State } from "@/store/constants";
+
+export default defineComponent({
   props: {
     model: String,
     price: String,
@@ -43,7 +53,39 @@ export default {
     //Manufacturing Date
     manDate: String,
     orderId: Number,
+    buyerWalletAddress: String || undefined,
   },
-};
+  methods: {
+    async createOrderContract() {
+      const sellerAddr = await store.getters.getUserWallet;
+      console.log(sellerAddr);
+
+      const orderManager = await deployOrderManagerContract(
+        this.$props.buyerWalletAddress,
+        sellerAddr,
+        "0.001"
+      );
+      const token = store.getters.getToken;
+      const data = {
+        state: State.S_APPROVED,
+        orderManagerContract: orderManager.contractAddress,
+      };
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order contract couldn't be created");
+      } else {
+        alert("Order contract succesfully created!");
+      }
+    },
+  },
+});
 </script>
 <style lang=""></style>

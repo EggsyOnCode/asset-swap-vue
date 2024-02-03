@@ -52,15 +52,16 @@ export default defineComponent({
           userId: response.data.userId,
           userWallet: response.data.userWallet,
         };
-        console.log(user);
         store.commit("setUser", user);
         store.commit("setJwtAccessToken", response.data.jwt);
+        console.log(store.getters.getUserWallet);
         if (response.status === 200) {
           alert("User loggedIn successfully!");
         } else {
           alert("Incorrect Credentials!");
         }
       } catch (error) {
+        alert(error);
         throw new Error("Error occurred in login");
       }
     },
