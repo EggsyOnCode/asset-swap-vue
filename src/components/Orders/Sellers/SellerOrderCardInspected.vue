@@ -33,13 +33,18 @@
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold"
         v-bind:class="{
           'bg-green': state === 'buyer has deposited funds',
-          'py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-red text-black':
-            state === 'seller has approved',
+          'bg-red text-black': state === 'seller has approved',
         }"
         title="Waiting for the buyer to deposit funds"
-      >
-        No Funds in Contract
-      </button>
+        v-text="
+          state === 'buyer has deposited funds'
+            ? 'Funds Deposited'
+            : state === 'seller has approved'
+            ? 'No Funds in Contract'
+            : ''
+        "
+      ></button>
+
       <button
         v-if="
           state === 'buyer has deposited funds' ||
@@ -52,6 +57,7 @@
         }"
         title="Waiting for the buyer to deposit funds"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold"
+        @click="inspectOrder"
       >
         Inspect
       </button>
@@ -75,7 +81,12 @@
   </div>
 </template>
 <script lang="ts">
-export default {
+import { State } from "@/store/constants";
+import axios from "axios";
+import { endPoints } from "@/constants/apiEndpoints";
+import store from "@/store";
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     model: String,
     price: String,
@@ -92,6 +103,29 @@ export default {
   data() {
     return {};
   },
-};
+  methods: {
+    async inspectOrder() {
+      const data = {
+        state: State.S_INSPECTED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be marked inspected");
+      } else {
+        alert("order marked inspected successfully!");
+      }
+    },
+  },
+});
 </script>
 <style lang=""></style>

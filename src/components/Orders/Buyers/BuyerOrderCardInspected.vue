@@ -47,6 +47,7 @@
         v-if="state === 'seller has permitted inspection'"
         title="Request for inspection of the asset"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
+        @click="inspectOrder"
       >
         Completed Inspection
       </button>
@@ -77,7 +78,11 @@
   </div>
 </template>
 <script lang="ts">
+import { endPoints } from "@/constants/apiEndpoints";
+import store from "@/store";
+import { State } from "@/store/constants";
 import { OrderManager } from "@/utils/contractInteraction";
+import axios from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
   props: {
@@ -112,6 +117,46 @@ export default defineComponent({
         this.$props.price
       );
       await orderManager.deposit();
+      const data = {
+        state: State.B_DEPOSITED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("funds couldn't be deposited");
+      } else {
+        alert("funds deposited successfully!");
+      }
+    },
+    async inspectOrder() {
+      const data = {
+        state: State.B_INSPECTED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be marked inspected");
+      } else {
+        alert("order marked inspected successfully!");
+      }
     },
   },
 });
