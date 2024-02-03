@@ -20,6 +20,13 @@
         type="password"
         class="w-1/2"
       ></v-text-field>
+      <v-text-field
+        v-model="walletAddress"
+        label="WalletAddress"
+        placeholder="Wallet Address"
+        class="w-1/2"
+      ></v-text-field>
+
       <v-btn depressed elevation="2" @click="signUp" raised class="bg-accent"
         >Sign Up</v-btn
       >
@@ -35,6 +42,7 @@ export default defineComponent({
     return {
       userName: "",
       pwd: "",
+      walletAddress: "",
     };
   },
   methods: {
@@ -43,6 +51,7 @@ export default defineComponent({
         const data = {
           username: this.userName,
           password: this.pwd,
+          walletAddress: this.walletAddress,
         };
         const response = await axios.post(endPoints.userSignUp, data);
         if (response.status === 201) {

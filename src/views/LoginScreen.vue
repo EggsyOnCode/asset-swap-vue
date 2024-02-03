@@ -50,7 +50,9 @@ export default defineComponent({
         const user = {
           userName: response.data.userName,
           userId: response.data.userId,
+          userWallet: response.data.userWallet,
         };
+        console.log(user);
         store.commit("setUser", user);
         store.commit("setJwtAccessToken", response.data.jwt);
         if (response.status === 200) {

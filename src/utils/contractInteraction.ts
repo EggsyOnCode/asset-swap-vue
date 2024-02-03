@@ -23,21 +23,39 @@ export async function deployOrderManagerContract(
 ) {
   if (typeof window.ethereum !== "undefined") {
     console.log("MetaMask is installed!");
-    const metamask = new ethers.providers.Web3Provider(window.ethereum, "any");
-    const account = metamask.getSigner();
-    const factory = new ContractFactory(
-      orderManagerAbi,
-      orderManagerByteCode,
-      account
-    );
-    const contract = await factory.deploy(buyerAddress, sellerAddr, price);
-    const contractRef = new ethers.Contract(
-      contract.address,
-      orderManagerAbi,
-      rpcProvider
-    );
-    const orderManager = new OrderManager(contract.address, contractRef, price);
-    return orderManager;
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    buyerAddress = buyerAddress.toLowerCase();
+    // console.log(accounts[0], buyerAddress, sellerAddr);
+    // console.log(typeof accounts[0], typeof buyerAddress);
+    if (accounts[0].toString() == buyerAddress) {
+      const metamask = new ethers.providers.Web3Provider(
+        window.ethereum,
+        "any"
+      );
+      const account = await metamask.getSigner();
+      const factory = new ContractFactory(
+        orderManagerAbi,
+        orderManagerByteCode,
+        account
+      );
+      const tPrice = ethers.utils.parseUnits(price, 18);
+      const contract = await factory.deploy(buyerAddress, sellerAddr, tPrice);
+      const contractRef = new ethers.Contract(
+        contract.address,
+        orderManagerAbi,
+        rpcProvider
+      );
+      const orderManager = new OrderManager(
+        contract.address,
+        contractRef,
+        price
+      );
+      return orderManager;
+    } else {
+      throw Error("buyer and connect wallet address are diff");
+    }
   } else {
     throw Error("no metamask provider found!");
   }

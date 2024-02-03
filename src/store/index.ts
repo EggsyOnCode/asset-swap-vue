@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 interface User {
   userId: number;
   userName: string;
+  userWallet: string;
 }
 export default createStore({
   state: {
@@ -24,6 +25,9 @@ export default createStore({
     },
     getUserId(state) {
       return state.user.userId;
+    },
+    getUserWallet(state) {
+      return state.user.userWallet;
     },
     getUsername(state) {
       return state.user.userName;

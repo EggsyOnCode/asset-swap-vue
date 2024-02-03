@@ -15,6 +15,7 @@
         :engine-power="item.asset.enginePower"
         :assetId="item.assetId"
         :sellerId="item.userId"
+        :sellerWalletAddress="item.user.walletAddress"
       />
     </div>
   </div>

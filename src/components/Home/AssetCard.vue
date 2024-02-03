@@ -33,7 +33,9 @@
   </div>
 </template>
 <script lang="js">
+import { endPoints } from '@/constants/apiEndpoints';
 import store from '@/store';
+import { deployOrderManagerContract } from '@/utils/contractInteraction';
 import axios from 'axios';
 
 
@@ -49,6 +51,7 @@ export default {
     manufacturingDate: String,
     assetId: String,
     sellerId: String,
+    sellerWalletAddress: String
   },
   data() {
     return {};
@@ -58,25 +61,27 @@ export default {
   methods: {
     async createOrder(){
       try {
-        const payload = {
-          sellerId: this.$props.sellerId,
-            buyerId: store.getters.getUserId,
-            assetId: this.$props.assetId,
-        };
+        // const payload = {
+        //   sellerId: this.$props.sellerId,
+        //     buyerId: store.getters.getUserId,
+        //     assetId: this.$props.assetId,
+        // };
 
-        // Replace 'yourBearerToken' with the actual bearer token
-        const token = store.getters.getToken;
+        // // Replace 'yourBearerToken' with the actual bearer token
+        // const token = store.getters.getToken;
 
-        const response = await axios.post('http://127.0.0.1:5000/orders', payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // Handle the response as needed
-        if(response.status === 201)alert('Order created successfully');
-        else{
-          alert("order not created!");
-        }
+        // const response = await axios.post(`${endPoints.ordersUrl}/orders`, payload, {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // });
+        // // Handle the response as needed
+        // if(response.status === 201)alert('Order created successfully');
+        // else{
+        //   alert("order not created!");
+        // }
+        const buyerAddr = store.getters.getUserWallet;
+        const orderManager = await deployOrderManagerContract(buyerAddr, this.$props.sellerWalletAddress, '0.001');
       } catch (error) {
         console.error('Error creating order:', error);
       }
