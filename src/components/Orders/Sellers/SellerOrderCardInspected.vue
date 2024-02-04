@@ -64,7 +64,11 @@
       <h1 v-if="state === 'seller has permitted inspection'" class="text-xl">
         Inspection under progress...
       </h1>
+      <h1 v-if="state === 'buyer has completed inspection'" class="text-xl">
+        Inspection Completed by buyer, waiting for confirmation...
+      </h1>
       <button
+        v-if="state === 'buyer has confirmed the order'"
         v-bind:class="{
           'bg-green':
             state === 'buyer has confirmed the order' ||
@@ -77,6 +81,23 @@
         @click="confirmOrder"
       >
         Confirm the Order
+      </button>
+      <!-- <button
+        v-if="state === 'seller has approved'"
+        class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
+        title="Will Cancel the Order, don't cancel during inspection"
+        @click="cancelOrderBeforeDeposit"
+      >
+        Cancel the Order
+      </button> -->
+
+      <button
+        v-if="isCancellationAllowed"
+        class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
+        title="Will Cancel the Order, don't cancel during inspection"
+        @click="cancelOrder"
+      >
+        Cancel the Order
       </button>
     </div>
   </div>
@@ -103,7 +124,10 @@ export default defineComponent({
     buyer: String,
     mileage: String,
     location: String,
-    state: String,
+    state: {
+      type: String,
+      required: true,
+    },
     //Manufacturing Date
     manDate: String,
     orderId: Number,
@@ -116,6 +140,12 @@ export default defineComponent({
     return {
       orderManagerAddress: "",
     };
+  },
+  computed: {
+    isCancellationAllowed(): boolean {
+      const notAllowedStates: string[] = [State.S_INSPECTED, State.S_APPROVED];
+      return !notAllowedStates.includes(this.$props.state);
+    },
   },
   methods: {
     async inspectOrder() {
@@ -213,12 +243,6 @@ export default defineComponent({
       }
     },
     async cancelOrder() {
-      const priceEth = await pkrToEth(this.$props.price);
-      const orderManager = new OrderManager(
-        this.orderManagerAddress,
-        priceEth.toString()
-      );
-      await orderManager.cancel();
       const data = {
         state: State.S_CANCELLED,
       };
@@ -235,6 +259,27 @@ export default defineComponent({
       );
       if (res.status !== 200) {
         alert("order couldn't be cancelled");
+      } else {
+        alert("order cancelled successfully!");
+      }
+    },
+    async cancelOrderBeforeDeposit() {
+      const data = {
+        state: State.S_CANCELLED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be cancelled successfully");
       } else {
         alert("order cancelled successfully!");
       }
