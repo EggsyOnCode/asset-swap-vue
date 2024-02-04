@@ -13,10 +13,12 @@
         @click="setInspected"
       />
       <ChipVue :color="'bg-green'" :text="'Completed'" @click="setCompleted" />
+      <ChipVue :color="'bg-green'" :text="'Cancelled'" @click="setCancelled" />
     </div>
     <SellerOrdersListRequestedVue v-if="chipState == 'requested'" />
     <SellerOrderListInspectedVue v-if="chipState == 'inspected'" />
     <SellerOrderListCompletedVue v-if="chipState == 'completed'" />
+    <SellerOrdersListCancelledVue v-if="chipState == 'cancelled'" />
   </div>
 </template>
 <script lang="ts">
@@ -27,6 +29,7 @@ import ChipVue from "@/components/Orders/Chip.vue";
 import SellerOrderListInspectedVue from "@/components/Orders/Sellers/Views/SellerOrderListInspected.vue";
 import SellerOrdersListRequestedVue from "@/components/Orders/Sellers/Views/SellerOrdersListRequested.vue";
 import SellerOrderListCompletedVue from "@/components/Orders/Sellers/Views/SellerOrderListCompleted.vue";
+import SellerOrdersListCancelledVue from "@/components/Orders/Sellers/Views/SellerOrdersListCancelled.vue";
 
 export default defineComponent({
   components: {
@@ -34,6 +37,7 @@ export default defineComponent({
     SellerOrderListCompletedVue,
     SellerOrdersListRequestedVue,
     SellerOrderListInspectedVue,
+    SellerOrdersListCancelledVue,
     ChipVue,
   },
   data() {
@@ -50,6 +54,9 @@ export default defineComponent({
     },
     setCompleted() {
       this.chipState = StatesOrder.COMPLETED;
+    },
+    setCancelled() {
+      this.chipState = StatesOrder.CANCELLED;
     },
   },
 });
