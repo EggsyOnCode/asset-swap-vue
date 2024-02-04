@@ -87,7 +87,11 @@ import axios from "axios";
 import { endPoints } from "@/constants/apiEndpoints";
 import store from "@/store";
 import { defineComponent } from "vue";
-import { deployCarNftContract, pkrToEth } from "@/utils/contractInteraction";
+import {
+  deployCarNftContract,
+  OrderManager,
+  pkrToEth,
+} from "@/utils/contractInteraction";
 export default defineComponent({
   props: {
     model: String,
@@ -109,7 +113,9 @@ export default defineComponent({
     },
   },
   data() {
-    return {};
+    return {
+      orderManagerAddress: "",
+    };
   },
   methods: {
     async inspectOrder() {
@@ -147,6 +153,7 @@ export default defineComponent({
       const token = store.getters.getToken;
       const data = {
         nftContract: nftContract.contractAddress,
+        state: State.S_CONFIRMED,
       };
       const res = await axios.put(
         `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
@@ -166,6 +173,44 @@ export default defineComponent({
 
       await nftContract.mintNFT(buyerAddr, "hello World");
       await nftContract.resetOwner(buyerAddr);
+
+      const orderAddrRes = await axios.get(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (orderAddrRes.status !== 200) {
+        alert("orderAddress data couldn't be fetched");
+      } else {
+        console.log(orderAddrRes.data.orderManagerContract);
+        this.orderManagerAddress = orderAddrRes.data.orderManagerContract;
+      }
+      const orderManager = new OrderManager(
+        this.orderManagerAddress,
+        pkrToEth.toString()
+      );
+      await orderManager.withdraw();
+
+      const dataComplete = {
+        state: State.COMPLETED,
+      };
+      const response = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        dataComplete,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status !== 200) {
+        alert("order couldn't be completed");
+      } else {
+        alert("order succesfully completed!");
+      }
     },
   },
 });

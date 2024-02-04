@@ -117,15 +117,23 @@ export class OrderManager {
       // Send transaction to deposit funds
       const transactionResponse = await signedContract.deposit(options);
       await transactionResponse.wait();
-      console.log("Funds deposited successfully");
+      console.log("Funds withdraw by the seller successfully");
     } catch (error) {
-      console.error("Error depositing funds:", error);
+      console.error("Error withdrawing funds:", error);
     }
   }
 
   async withdraw() {
     await this.init();
-    await this.contract.withdraw();
+    const signedContract = this.contract.connect(this.signer);
+    try {
+      // Send transaction to deposit funds
+      const transactionResponse = await signedContract.withdraw();
+      await transactionResponse.wait();
+      console.log("Funds deposited successfully");
+    } catch (error) {
+      console.error("Error depositing funds:", error);
+    }
   }
 }
 
