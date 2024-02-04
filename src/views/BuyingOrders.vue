@@ -13,10 +13,12 @@
         @click="setInspected"
       />
       <ChipVue :color="'bg-green'" :text="'Completed'" @click="setCompleted" />
+      <ChipVue :color="'bg-green'" :text="'Cancelled'" @click="setCancelled" />
     </div>
     <BuyingOrderListRequestedVue v-if="chipState == 'requested'" />
     <BuyingOrdersListInspectedVue v-if="chipState == 'inspected'" />
     <BuyingOrdersListCompletedVue v-if="chipState == 'completed'" />
+    <BuyingOrdersListCancelledVueVue v-if="chipState == 'cancelled'" />
   </div>
 </template>
 <script lang="ts">
@@ -27,6 +29,7 @@ import ChipVue from "@/components/Orders/Chip.vue";
 import BuyingOrderListRequestedVue from "@/components/Orders/Buyers/Views/BuyingOrderListRequested.vue";
 import BuyingOrdersListInspectedVue from "@/components/Orders/Buyers/Views/BuyingOrdersListInspected.vue";
 import BuyingOrdersListCompletedVue from "@/components/Orders/Buyers/Views/BuyingOrdersListCompleted.vue";
+import BuyingOrdersListCancelledVueVue from "@/components/Orders/Buyers/BuyingOrdersListCancelledVue.vue";
 export default defineComponent({
   components: {
     SearchBarVue,
@@ -34,6 +37,7 @@ export default defineComponent({
     BuyingOrderListRequestedVue,
     BuyingOrdersListInspectedVue,
     BuyingOrdersListCompletedVue,
+    BuyingOrdersListCancelledVueVue,
   },
   data() {
     return {
@@ -49,6 +53,9 @@ export default defineComponent({
     },
     setCompleted() {
       this.chipState = StatesOrder.COMPLETED;
+    },
+    setCancelled() {
+      this.chipState = StatesOrder.CANCELLED;
     },
   },
 });
