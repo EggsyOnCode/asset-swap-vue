@@ -6,10 +6,11 @@ import {
   carNftByteCode,
 } from "./contracts";
 //using the anvil json rpc provider and local testnet ethereum fork
-const rpcProvider = new ethers.providers.JsonRpcProvider(endPoints.jsonRPC);
+const rpcProvider = new ethers.providers.JsonRpcProvider(
+  "http://127.0.0.1:7000"
+);
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import axios from "axios";
-import { endPoints } from "@/constants/apiEndpoints";
 
 declare global {
   interface Window {
@@ -32,6 +33,7 @@ export async function pkrToEth(pkr: string) {
   const rate = pkrEthResponse.data.data.rates["PKR"];
   const ethPrice: number = parseFloat(pkr) / rate;
   const roundedEthPrice: number = parseFloat(ethPrice.toFixed(3));
+
   return roundedEthPrice;
 }
 
@@ -60,7 +62,9 @@ export async function deployOrderManagerContract(
         account
       );
       const tPrice = ethers.utils.parseUnits(price, 18);
+      console.log("deploying...");
       const contract = await factory.deploy(buyerAddress, sellerAddr, tPrice);
+      console.log(contract.address);
       const orderManager = new OrderManager(contract.address, price);
       return orderManager;
     } else {
@@ -136,10 +140,10 @@ export class OrderManager {
   }
   async cancel() {
     await this.init();
-    const signedContract = this.contract.cancelOrder(this.signer);
+    const signedContract = this.contract.connect(this.signer);
     try {
       // Send transaction to deposit funds
-      const transactionResponse = await signedContract.withdraw();
+      const transactionResponse = await signedContract.cancelOrder();
       await transactionResponse.wait();
       console.log("OrderManager cancelled successfully");
     } catch (error) {
