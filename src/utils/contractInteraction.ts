@@ -6,11 +6,10 @@ import {
   carNftByteCode,
 } from "./contracts";
 //using the anvil json rpc provider and local testnet ethereum fork
-const rpcProvider = new ethers.providers.JsonRpcProvider(
-  "http://127.0.0.1:8545"
-);
+const rpcProvider = new ethers.providers.JsonRpcProvider(endPoints.jsonRPC);
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import axios from "axios";
+import { endPoints } from "@/constants/apiEndpoints";
 
 declare global {
   interface Window {
@@ -133,6 +132,18 @@ export class OrderManager {
       console.log("Funds deposited successfully");
     } catch (error) {
       console.error("Error depositing funds:", error);
+    }
+  }
+  async cancel() {
+    await this.init();
+    const signedContract = this.contract.cancelOrder(this.signer);
+    try {
+      // Send transaction to deposit funds
+      const transactionResponse = await signedContract.withdraw();
+      await transactionResponse.wait();
+      console.log("OrderManager cancelled successfully");
+    } catch (error) {
+      console.error("Error cancelling order manager :", error);
     }
   }
 }

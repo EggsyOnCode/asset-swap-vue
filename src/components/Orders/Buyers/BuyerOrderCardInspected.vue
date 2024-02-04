@@ -63,14 +63,23 @@
       >
         Confirm the Order
       </button>
+      <h1 v-if="state === 'buyer has confirmed the order'" class="text-xl">
+        Waiting for seller to confirm the order and mint CarNFT....
+      </h1>
       <button
-        v-bind:class="{
-          'bg-green': state === 'buyer has completed inspection',
-          'py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-red text-black':
-            state !== 'buyer has completed inspection',
-        }"
+        v-if="state === 'seller has approved'"
+        class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
         title="Will Cancel the Order, don't cancel during inspection"
-        class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold"
+        @click="cancelOrderBeforeDeposit"
+      >
+        Cancel the Order
+      </button>
+
+      <button
+        v-if="isCancellationAllowed"
+        class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
+        title="Will Cancel the Order, don't cancel during inspection"
+        @click="cancelOrder"
       >
         Cancel the Order
       </button>
@@ -81,7 +90,7 @@
 import { endPoints } from "@/constants/apiEndpoints";
 import store from "@/store";
 import { State } from "@/store/constants";
-import { OrderManager } from "@/utils/contractInteraction";
+import { OrderManager, pkrToEth } from "@/utils/contractInteraction";
 import axios from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -93,7 +102,10 @@ export default defineComponent({
     },
     enginePower: String,
     seller: String,
-    state: String,
+    state: {
+      type: String,
+      required: true,
+    },
     mileage: String,
     location: String,
     //Manufacturing Date
@@ -107,6 +119,17 @@ export default defineComponent({
   data() {
     return {};
   },
+  computed: {
+    isCancellationAllowed(): boolean {
+      const notAllowedStates: string[] = [
+        State.S_INSPECTED,
+        State.B_CONFIRMED,
+        State.S_APPROVED,
+      ];
+      return !notAllowedStates.includes(this.$props.state);
+    },
+  },
+
   mounted() {
     console.log(this.$props.orderManagerContractAddress);
   },
@@ -177,6 +200,54 @@ export default defineComponent({
         alert("order couldn't be confirmed");
       } else {
         alert("order marked confirmed from buyer successfully!");
+      }
+    },
+    async cancelOrder() {
+      const priceEth = await pkrToEth(this.$props.price);
+      const orderManager = new OrderManager(
+        this.$props.orderManagerContractAddress,
+        priceEth.toString()
+      );
+      await orderManager.cancel();
+      const data = {
+        state: State.B_CANCELLED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be cancelled successfully");
+      } else {
+        alert("order cancelled successfully!");
+      }
+    },
+    async cancelOrderBeforeDeposit() {
+      const data = {
+        state: State.B_CANCELLED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be cancelled successfully");
+      } else {
+        alert("order cancelled successfully!");
       }
     },
   },

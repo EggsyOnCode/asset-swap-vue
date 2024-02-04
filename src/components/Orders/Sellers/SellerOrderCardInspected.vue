@@ -212,6 +212,33 @@ export default defineComponent({
         alert("order succesfully completed!");
       }
     },
+    async cancelOrder() {
+      const priceEth = await pkrToEth(this.$props.price);
+      const orderManager = new OrderManager(
+        this.orderManagerAddress,
+        priceEth.toString()
+      );
+      await orderManager.cancel();
+      const data = {
+        state: State.S_CANCELLED,
+      };
+
+      const token = store.getters.getToken;
+      const res = await axios.put(
+        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status !== 200) {
+        alert("order couldn't be cancelled");
+      } else {
+        alert("order cancelled successfully!");
+      }
+    },
   },
 });
 </script>

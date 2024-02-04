@@ -1,4 +1,5 @@
 export const endPoints = {
+  jsonRPC: "http://127.0.0.1:8545",
   ordersUrl: "http://127.0.0.1:5000",
   homeAssets: "http://127.0.0.1:3000/user-assets",
   advertizedAssets: "http://127.0.0.1:3000/advertized-assets",
