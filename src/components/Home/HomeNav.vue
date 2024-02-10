@@ -21,7 +21,7 @@
           v-else-if="isNotification(navItem)"
           class="hover:cursor-pointer"
           :class="{ 'text-red': redNotf }"
-          @click="handleNotificationClick(navItem)"
+          @click="notifNav()"
         >
           {{ navItem.name }}
         </h1>
@@ -128,6 +128,9 @@ export default {
     navToPage(item) {
       console.log(item.toLowerCase());
       this.$router.push(`/${item.toLowerCase()}`);
+    },
+    notifNav() {
+      this.$router.push("/notifications");
     },
     orderNav(index) {
       switch (index) {
