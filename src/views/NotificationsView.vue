@@ -1,12 +1,20 @@
 <template>
-  <div>
-    <div v-for="(notification, index) in notifications" :key="index">
-      <p>{{ notification.msg }}</p>
-      <p>
-        Update on order regarding "{{ notification.asset }}" from "{{
-          notification.from
-        }}"
-      </p>
+  <div class="mt-10">
+    <h1 class="text-2xl font-bold mb-4">Current Notifications</h1>
+    <div class="w-2/4 flex flex-col justify-center items-center mx-auto">
+      <v-card
+        v-for="(notification, index) in notifications"
+        :key="index"
+        class="mb-4 w-full"
+      >
+        <template v-slot:title>Update on Order</template>
+        <template v-slot:subtitle>
+          {{ notification.asset }} from {{ notification.from }}
+        </template>
+        <template v-slot:text>
+          {{ notification.msg }}
+        </template>
+      </v-card>
     </div>
   </div>
 </template>

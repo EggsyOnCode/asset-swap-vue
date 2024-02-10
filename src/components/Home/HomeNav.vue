@@ -99,10 +99,8 @@ export default {
   },
   watch: {
     notificationCount(oldnotificationCount, newnotificationCount) {
-      if (newnotificationCount !== "0") {
-        console.log(newnotificationCount);
-        this.redNotf = true;
-      }
+      const value = store.getters.getNotificationCount;
+      this.redNotf = value !== 0;
     },
   },
   methods: {
