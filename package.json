@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@metamask/sdk": "^0.14.2",
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "@types/event-source-polyfill": "^1.0.5",
     "axios": "^1.6.7",
     "core-js": "^3.8.3",
     "ethers": "5.7.2",
+    "event-source-polyfill": "^1.0.31",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-material-design-icons": "^5.2.0",
+    "vue-notification-bell": "^0.9.12",
     "vue-router": "^4.0.3",
     "vuetify": "^3.4.9"
   },

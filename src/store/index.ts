@@ -1,4 +1,7 @@
+import { endPoints } from "@/constants/apiEndpoints";
 import { createStore } from "vuex";
+
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 interface User {
   userId: number;
   userName: string;
@@ -8,6 +11,7 @@ export default createStore({
   state: {
     user: {} as User,
     jwtToken: "",
+    notificationCount: "",
   },
   mutations: {
     setUser(state, userObj) {
@@ -17,7 +21,23 @@ export default createStore({
       state.jwtToken = token;
     },
   },
-  actions: {},
+  actions: {
+    async initSSEListener({ commit, state }) {
+      await fetchEventSource(`${endPoints.notificationEvent}/count`, {
+        headers: {
+          Authorization: `Bearer ${state.jwtToken}`,
+        },
+        onmessage(ev) {
+          if (ev.id !== "" && ev.data !== "") {
+            const data = JSON.parse(ev.data);
+            console.log(data.unreadCount);
+            state.notificationCount = data.unreadCount;
+          }
+        },
+      });
+    },
+  },
+
   modules: {},
   getters: {
     getToken(state) {
@@ -31,6 +51,10 @@ export default createStore({
     },
     getUsername(state) {
       return state.user.userName;
+    },
+
+    getNotificationCount(state) {
+      return state.notificationCount;
     },
   },
 });

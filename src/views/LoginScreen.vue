@@ -57,6 +57,7 @@ export default defineComponent({
         console.log(store.getters.getUserWallet);
         if (response.status === 200) {
           alert("User loggedIn successfully!");
+          store.dispatch("initSSEListener");
         } else {
           alert("Incorrect Credentials!");
         }

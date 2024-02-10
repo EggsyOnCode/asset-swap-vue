@@ -20,6 +20,10 @@ export const homeNavLinks: navItem[] = [
     name: "Auth",
     index: 4,
   },
+  {
+    name: "Notifications",
+    index: 5,
+  },
 ];
 
 export const CTA = [

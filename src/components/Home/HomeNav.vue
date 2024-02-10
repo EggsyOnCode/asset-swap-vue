@@ -16,6 +16,16 @@
         >
           {{ navItem.name }}
         </h1>
+
+        <h1
+          v-else-if="isNotification(navItem)"
+          class="hover:cursor-pointer"
+          :class="{ 'text-red': redNotf }"
+          @click="handleNotificationClick(navItem)"
+        >
+          {{ navItem.name }}
+        </h1>
+
         <!-- Conditionally render v-select for other items -->
         <v-menu v-else-if="isOrder(navItem)" open-on-hover>
           <template v-slot:activator="{ props }">
@@ -55,6 +65,9 @@
 
 <script>
 import { homeNavLinks } from "@/constants/navList";
+import { endPoints } from "@/constants/apiEndpoints";
+import store from "@/store";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 export default {
   data() {
     return {
@@ -62,6 +75,8 @@ export default {
       activeItem: null,
       ordersOptions: ["Buying Orders", "Selling Orders", "Advertise An Asset"],
       authOptions: ["Login", "SignUp"],
+      notfCount: "",
+      redNotf: false,
     };
   },
   computed: {
@@ -71,20 +86,40 @@ export default {
     firstNavItem() {
       return this.navBar[0];
     },
+    notificationCount() {
+      return store.getters.getNotificationCount;
+    },
+    shouldRenderNavItem() {
+      return (item) => {
+        return (
+          item.name !== "Orders" && item.name !== "Auth" && item.index !== 5
+        );
+      };
+    },
+  },
+  watch: {
+    notificationCount(oldnotificationCount, newnotificationCount) {
+      if (newnotificationCount !== "0") {
+        console.log(newnotificationCount);
+        this.redNotf = true;
+      }
+    },
   },
   methods: {
     isActive(itemIndex) {
       return this.activeItem === itemIndex;
-    },
-    shouldRenderNavItem(item) {
-      // Add your conditions here
-      return item.name !== "Orders" && item.name !== "Auth";
     },
     isOrder(item) {
       return item.name === "Orders";
     },
     isAuth(item) {
       return item.name === "Auth";
+    },
+    isNotification(item) {
+      return item.index === 5;
+    },
+    handleNotificationClick(navItem) {
+      return;
     },
     setActive(item) {
       this.activeItem = item.index;

@@ -28,7 +28,7 @@ import axios from "axios";
 // interface items {
 //   price: string,
 //   sellerUsername: string,
-//   mileage: string,
+//   mileage: string
 //   manufacturingDate: string,
 //   model: string,
 //   location: string,

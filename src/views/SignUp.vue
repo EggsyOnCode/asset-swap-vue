@@ -26,7 +26,6 @@
         placeholder="Wallet Address"
         class="w-1/2"
       ></v-text-field>
-
       <v-btn depressed elevation="2" @click="signUp" raised class="bg-accent"
         >Sign Up</v-btn
       >

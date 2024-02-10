@@ -12,7 +12,6 @@
 </template>
 <script lang="ts">
 import CircleOutline from "vue-material-design-icons/CircleOutline.vue";
-
 export default {
   components: {
     CircleOutline,
