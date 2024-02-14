@@ -12,6 +12,7 @@
       :buyer="asset.buyer.username"
       :orderId="asset.orderId"
       :buyerWalletAddress="asset.buyer.walletAddress"
+      :imgUrl="asset.asset.imgUrl"
     />
   </div>
 </template>
