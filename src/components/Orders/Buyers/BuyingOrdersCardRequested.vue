@@ -1,10 +1,18 @@
 <template lang="html">
   <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
     <img
+      v-if="imgUrl"
+      :src="imgUrl"
+      alt="free-img-api"
+      class="w-1/3 m-3 rounded-lg"
+    />
+    <img
+      v-else
       src="../../../assets/wallpaper.jpg"
       alt="free-img-api"
       class="w-1/3 m-3 rounded-lg"
     />
+
     <div
       class="flex flex-col items-start justify-around w-1/3 text-black text-xl"
     >
@@ -46,6 +54,7 @@ export default {
     //Manufacturing Date
     manDate: String,
     orderId: Number,
+    imgUrl: String,
   },
 };
 </script>

@@ -13,6 +13,7 @@
       :orderId="asset.orderId"
       :orderManagerContractAddress="asset.orderManager"
       :state="asset.asset.state"
+      :imgUrl="asset.asset.imgUrl"
     />
   </div>
 </template>
