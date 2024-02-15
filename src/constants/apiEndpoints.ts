@@ -8,4 +8,6 @@ export const endPoints = {
   orderManagerContract: "http://127.0.0.1:5000/orders",
   notificationEvent: "http://127.0.0.1:5000/notifications",
   assets: "http://127.0.0.1:4000/assets",
+
+  userAssets: "http://127.0.0.1:4000/user-assets",
 };

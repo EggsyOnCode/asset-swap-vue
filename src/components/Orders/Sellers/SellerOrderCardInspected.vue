@@ -98,6 +98,14 @@
         Cancel the Order
       </button> -->
 
+      <!-- <button
+        v-if="state === 'buyer has confirmed the order'"
+        class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
+        title="Will Cancel the Order, don't cancel during inspection"
+        @click="storeNft"
+      >
+        Store Nft to IPFS
+      </button> -->
       <button
         v-if="isCancellationAllowed"
         class="py-1 px-4 rounded-[11px] flex-shrink-0 font-bold bg-green"
@@ -120,9 +128,21 @@ import {
   OrderManager,
   pkrToEth,
 } from "@/utils/contractInteraction";
+import { NftInfo } from "@/constants/interfaces";
 export default defineComponent({
   props: {
-    model: String,
+    model: {
+      type: String,
+      required: true,
+    },
+    buyerId: {
+      type: Number,
+      required: true,
+    },
+    assetId: {
+      type: Number,
+      required: true,
+    },
     price: {
       type: String,
       required: true,
@@ -130,7 +150,10 @@ export default defineComponent({
     enginePower: String,
     buyer: String,
     mileage: String,
-    location: String,
+    location: {
+      type: String,
+      required: true,
+    },
     state: {
       type: String,
       required: true,
@@ -142,7 +165,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    imgUrl: String,
+    imgUrl: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -232,6 +258,7 @@ export default defineComponent({
       );
       await orderManager.withdraw();
 
+      await this.storeNft();
       const dataComplete = {
         state: State.COMPLETED,
       };
@@ -290,6 +317,53 @@ export default defineComponent({
         alert("order couldn't be cancelled successfully");
       } else {
         alert("order cancelled successfully!");
+      }
+    },
+    async storeNft() {
+      const priceEth = await pkrToEth(this.$props.price);
+      const sellerAddr = await store.getters.getUserWallet;
+      const nftInfo: NftInfo = {
+        model: this.model,
+        price: priceEth.toString(),
+        imgUrl: this.imgUrl,
+        location: this.location,
+        buyerAddress: this.buyerWalletAddress,
+        sellerAddress: sellerAddr,
+      };
+      const token = store.getters.getToken;
+      const nftUploadRes = await axios.post(
+        `${endPoints.assets}/storeNft`,
+        nftInfo,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const nftIpfsUrl = nftUploadRes.data.url;
+      await this.assingUserAsset(nftIpfsUrl);
+      if (nftUploadRes.status !== 201) {
+        alert("nft couldn't be stored successfully");
+      } else {
+        alert("nft stored successfully!");
+      }
+    },
+    async assingUserAsset(ipfsUrl: string) {
+      const data = {
+        assetId: this.assetId,
+        userId: this.buyerId,
+        nftIpfsUrl: ipfsUrl,
+      };
+      const token = store.getters.getToken;
+      const assignAsset = await axios.post(`${endPoints.userAssets}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (assignAsset.status !== 201) {
+        alert("asset NOT assigned succesfully");
+      } else {
+        alert("asset assigned successfully!");
       }
     },
   },

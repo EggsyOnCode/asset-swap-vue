@@ -14,6 +14,8 @@
       :state="asset.asset.state"
       :buyerWalletAddress="asset.buyer.walletAddress"
       :imgUrl="asset.asset.imgUrl"
+      :buyerId="asset.buyer.id"
+      :assetId="asset.asset.id"
     />
   </div>
 </template>
