@@ -258,7 +258,7 @@ export default defineComponent({
       );
       await orderManager.withdraw();
 
-      await this.storeNft();
+      await this.storeNft(nftContract.contractAddress);
       const dataComplete = {
         state: State.COMPLETED,
       };
@@ -319,7 +319,7 @@ export default defineComponent({
         alert("order cancelled successfully!");
       }
     },
-    async storeNft() {
+    async storeNft(nftAddr: string) {
       const priceEth = await pkrToEth(this.$props.price);
       const sellerAddr = await store.getters.getUserWallet;
       const nftInfo: NftInfo = {
@@ -329,6 +329,7 @@ export default defineComponent({
         location: this.location,
         buyerAddress: this.buyerWalletAddress,
         sellerAddress: sellerAddr,
+        nftContractAddress: nftAddr,
       };
       const token = store.getters.getToken;
       const nftUploadRes = await axios.post(
@@ -349,10 +350,13 @@ export default defineComponent({
       }
     },
     async assingUserAsset(ipfsUrl: string) {
+      const sellerId = await store.getters.getUserId;
+
       const data = {
         assetId: this.assetId,
         userId: this.buyerId,
         nftIpfsUrl: ipfsUrl,
+        sellerId: sellerId,
       };
       const token = store.getters.getToken;
       const assignAsset = await axios.post(`${endPoints.userAssets}`, data, {

@@ -10,4 +10,5 @@ export interface NftInfo {
   location: string;
   sellerAddress: string;
   buyerAddress: string;
+  nftContractAddress: string;
 }

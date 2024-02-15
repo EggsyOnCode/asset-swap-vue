@@ -7,6 +7,7 @@ import SignUpVue from "@/views/SignUp.vue";
 import SellingOrdersVue from "@/views/SellingOrders.vue";
 import BuyingOrdersVue from "@/views/BuyingOrders.vue";
 import NotificationsViewVue from "@/views/NotificationsView.vue";
+import AssetsViewVue from "@/views/AssetsView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -32,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
     name: "Login",
     component: LoginScreenVue,
+  },
+  {
+    path: "/assets",
+    name: "User Assets",
+    component: AssetsViewVue,
   },
   {
     path: "/signUp",
