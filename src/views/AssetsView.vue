@@ -23,24 +23,33 @@ import { endPoints } from "@/constants/apiEndpoints";
 import axios from "axios";
 import store from "@/store";
 import UserAssetCard from "@/components/UserAssetCard.vue";
+import { defineComponent } from "vue";
+interface Item {
+  id: number;
+  asset: {
+    price: string;
+    mileage: string;
+    model: string;
+    location: string;
+    enginePower: string;
+    imgUrl: string;
+  };
+  seller: {
+    id: number;
+    username: string;
+  };
+  assetId: number;
+  nftIpfsUrl: string;
+  boughtAt: Date;
+}
 
-// interface items {
-//   price: string,
-//   sellerUsername: string,
-//   mileage: string
-//   manufacturingDate: string,
-//   model: string,
-//   location: string,
-//   enginePower: string,
-// }
-
-export default {
+export default defineComponent({
   components: {
     UserAssetCard,
   },
   data() {
     return {
-      items: [], // Store the data from the API response
+      items: [] as Item[], // Store the data from the API response
     };
   },
   async mounted() {
@@ -63,6 +72,6 @@ export default {
       console.error("Error fetching data:", error);
     }
   },
-};
+});
 </script>
 <style lang=""></style>
