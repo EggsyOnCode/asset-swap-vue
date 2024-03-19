@@ -6,8 +6,12 @@ import {
   carNftByteCode,
 } from "./contracts";
 //using the anvil json rpc provider and local testnet ethereum fork
+// const rpcProvider = new ethers.providers.JsonRpcProvider(
+//   "http://127.0.0.1:7000"
+// );
+
 const rpcProvider = new ethers.providers.JsonRpcProvider(
-  "http://127.0.0.1:7000"
+  "https://eth-sepolia.g.alchemy.com/v2/F6-PF8iL4X7tFrdosp8bXA8xU5gsZmA-"
 );
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import axios from "axios";

@@ -60,6 +60,10 @@
         </v-menu>
       </template>
     </div>
+    <div class="flex flex-row justify-center">
+      <v-icon>mdi-account</v-icon>
+      <span class="text-white">{{ user }}</span>
+    </div>
   </div>
 </template>
 
@@ -82,6 +86,13 @@ export default {
   computed: {
     restNav() {
       return this.navBar.slice(1);
+    },
+    user() {
+      if (store.getters.getUsername == null) {
+        return "Guest";
+      } else {
+        return store.getters.getUsername;
+      }
     },
     firstNavItem() {
       return this.navBar[0];
