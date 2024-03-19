@@ -5,13 +5,14 @@ import {
   carNftABI,
   carNftByteCode,
 } from "./contracts";
+
 //using the anvil json rpc provider and local testnet ethereum fork
 // const rpcProvider = new ethers.providers.JsonRpcProvider(
 //   "http://127.0.0.1:7000"
 // );
 
 const rpcProvider = new ethers.providers.JsonRpcProvider(
-  "https://eth-sepolia.g.alchemy.com/v2/F6-PF8iL4X7tFrdosp8bXA8xU5gsZmA-"
+  process.env.VUE_APP_ALCHEMY_API
 );
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import axios from "axios";
