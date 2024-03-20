@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
+  <div class="w-8/12 flex flex-row bg-secondary rounded-lg my-2">
     <img
       v-if="imgUrl"
       :src="imgUrl"
@@ -29,16 +29,22 @@
     <div class="flex flex-col justify-center items-center w-1/3">
       <button
         @click="copyURL"
-        class="py-1 px-4 rounded-[11px] bg-green flex-shrink-0 font-bold"
+        class="py-1 px-4 mb-5 rounded-[11px] bg-green flex-shrink-0 font-bold"
       >
         Copy NFT IPFS link
+      </button>
+      <button
+        @click="addToMetaMask"
+        class="py-1 px-4 rounded-[11px] bg-green flex-shrink-0 font-bold"
+      >
+        Add NFT to your MetaMask Wallet!
       </button>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { addTokenToMetamask } from "@/utils/contractInteraction";
 export default defineComponent({
   props: {
     model: String,
@@ -49,12 +55,19 @@ export default defineComponent({
     location: String,
     //Manufacturing Date
     manDate: String,
-    imgUrl: String,
+    imgUrl: {
+      type: String,
+      required: true,
+    },
     nftIpfsUrl: {
       type: String,
       required: true,
     },
     boughtAt: Date,
+    nftContract: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     async copyURL() {
@@ -63,6 +76,13 @@ export default defineComponent({
         alert("paste the copied url in Brave Browser");
       } catch ($e) {
         alert("Couldn't copy");
+      }
+    },
+    async addToMetaMask() {
+      try {
+        addTokenToMetamask(this.$props.imgUrl, this.$props.nftContract);
+      } catch (error) {
+        console.log(error);
       }
     },
   },

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="mt-6 flex flex-col items-center">
+  <div class="w-full mt-6 flex flex-col items-center">
     <h1 class="text-4xl font-semibold pb-6">~Your Assets~</h1>
     <UserAssetCard
       v-for="item in items"
@@ -15,6 +15,7 @@
       :nftIpfsUrl="item.nftIpfsUrl"
       :boughtAt="item.boughtAt"
       :imgUrl="item.asset.imgUrl"
+      :nftContract="item.nftContract"
     />
   </div>
 </template>
@@ -41,6 +42,7 @@ interface Item {
   assetId: number;
   nftIpfsUrl: string;
   boughtAt: Date;
+  nftContract: string;
 }
 
 export default defineComponent({

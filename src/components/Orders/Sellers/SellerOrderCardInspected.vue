@@ -284,6 +284,7 @@ export default defineComponent({
         alert("order couldn't be completed");
       } else {
         alert("order succesfully completed!");
+        //adding token to metamask
         this.$emit("card-updated");
       }
     },
@@ -337,36 +338,40 @@ export default defineComponent({
       }
     },
     async storeNft(nftAddr: string) {
-      const priceEth = await pkrToEth(this.$props.price);
-      const sellerAddr = await store.getters.getUserWallet;
-      const nftInfo: NftInfo = {
-        model: this.model,
-        price: priceEth.toString(),
-        imgUrl: this.imgUrl,
-        location: this.location,
-        buyerAddress: this.buyerWalletAddress,
-        sellerAddress: sellerAddr,
-        nftContractAddress: nftAddr,
-      };
-      const token = store.getters.getToken;
-      const nftUploadRes = await axios.post(
-        `${endPoints.assets}/storeNft`,
-        nftInfo,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      try {
+        const priceEth = this.$props.cryptoPrice;
+        const sellerAddr = await store.getters.getUserWallet;
+        const nftInfo: NftInfo = {
+          model: this.model,
+          price: priceEth.toString(),
+          imgUrl: this.imgUrl,
+          location: this.location,
+          buyerAddress: this.buyerWalletAddress,
+          sellerAddress: sellerAddr,
+          nftContractAddress: nftAddr,
+        };
+        const token = store.getters.getToken;
+        const nftUploadRes = await axios.post(
+          `${endPoints.assets}/storeNft`,
+          nftInfo,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const nftIpfsUrl = nftUploadRes.data.url;
+        await this.assingUserAsset(nftIpfsUrl, nftAddr);
+        if (nftUploadRes.status !== 201) {
+          alert("nft couldn't be stored successfully");
+        } else {
+          alert("nft stored successfully!");
         }
-      );
-      const nftIpfsUrl = nftUploadRes.data.url;
-      await this.assingUserAsset(nftIpfsUrl);
-      if (nftUploadRes.status !== 201) {
-        alert("nft couldn't be stored successfully");
-      } else {
-        alert("nft stored successfully!");
+      } catch (err) {
+        console.log(err);
       }
     },
-    async assingUserAsset(ipfsUrl: string) {
+    async assingUserAsset(ipfsUrl: string, nftContractAddr: string) {
       const sellerId = await store.getters.getUserId;
 
       const data = {
@@ -374,6 +379,7 @@ export default defineComponent({
         userId: this.buyerId,
         nftIpfsUrl: ipfsUrl,
         sellerId: sellerId,
+        nftContract: nftContractAddr,
       };
       const token = store.getters.getToken;
       const assignAsset = await axios.post(`${endPoints.userAssets}`, data, {

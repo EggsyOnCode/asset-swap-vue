@@ -27,6 +27,32 @@ function isValidAddress(address: string) {
   return ethers.utils.isAddress(address);
 }
 
+export async function addTokenToMetamask(imgUrl: string, nftContract: string) {
+  try {
+    // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+    const wasAdded = await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC721",
+        options: {
+          address: nftContract, // The address that the token is at.
+          symbol: "CAR", // A ticker symbol or shorthand, up to 5 chars.
+          decimals: 18, // The number of decimals in the token
+          image: imgUrl, // A string url of the token logo
+          tokenId: "0",
+        },
+      },
+    });
+
+    if (wasAdded) {
+      console.log("NFT added to metamask");
+    } else {
+      console.log("NFT coudln't be added to metamask");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 function formatAddress(address: string) {
   return ethers.utils.getAddress(address);
 }
