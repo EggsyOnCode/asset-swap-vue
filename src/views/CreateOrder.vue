@@ -7,7 +7,7 @@
         <h1 class="text-3xl font-semibold pb-6">~Advertise An Asset~</h1>
         <hr class="border-black w-full border-r-2" />
         <div
-          class="bg-secondary w-full my-4 h-[30%] rounded-lg flex flex-col items-center justify-center"
+          class="bg-secondary w-full my-4 h-[25%] rounded-lg flex flex-col items-center justify-center"
         >
           <img
             v-if="selectedImage"
@@ -79,6 +79,7 @@
           <button
             type="submit"
             class="order-btn flex align-middle justify-center bg-green p-3 rounded-lg text-black font-bold text-2xl hover:cursor-pointer mt-4"
+            @click="checkUserAuthentication()"
           >
             Create Order
           </button>
@@ -121,6 +122,13 @@ export default defineComponent({
     },
   },
   methods: {
+checkUserAuthentication() {
+    if (this.user === "Guest") {
+      alert("Please login to continue");
+      return false; // Indicate that authentication failed
+    }
+    return true; // Indicate that authentication passed
+  },
     handleImageUpload(event ) {
       // Store the selected image file
       this.selectedImage = event.target.files[0];
@@ -135,10 +143,6 @@ export default defineComponent({
       this.imageSelected = true;
     },
     async submitForm() {
-      if(this.user === "Guest") {
-        alert("Please login to continue");
-        return;
-      }
       // Create a FormData object
       const formData = new FormData();
 
