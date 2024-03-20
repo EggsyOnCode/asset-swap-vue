@@ -1,4 +1,3 @@
-import axios from 'axios';
 <template lang="html">
   <form @submit.prevent="submitForm">
     <div class="min-h-screen bg-bg flex h-[100vh]">
@@ -10,8 +9,15 @@ import axios from 'axios';
         <div
           class="bg-secondary w-full my-4 h-[30%] rounded-lg flex flex-col items-center justify-center"
         >
+          <img
+            v-if="selectedImage"
+            :src="selectedImageURL"
+            alt="Selected Image"
+            class="w-full h-full object-cover rounded-lg"
+          />
           <!-- Replace button with input type="file" to upload an image -->
           <input
+            v-if="imageSelected === false"
             type="file"
             accept="image/*"
             @change="handleImageUpload"
@@ -19,6 +25,7 @@ import axios from 'axios';
             ref="imageInput"
           />
           <button
+            v-if="imageSelected === false"
             class="py-1 px-4 rounded-[11px] bg-accent flex-shrink-0"
             @click="$refs.imageInput.click()"
           >
@@ -28,44 +35,44 @@ import axios from 'axios';
         <input
           type="text"
           v-model="formData.model"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Asset Name"
         />
         <input
           type="number"
           v-model="formData.price"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Asset Price"
         />
         <h1 class="text-xl font-normal pb-6 mt-3">~Asset Specs~</h1>
         <input
           type="text"
           v-model="formData.mileage"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Mileage"
         />
         <input
           type="text"
           v-model="formData.location"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Location of Exchange"
         />
         <input
           type="text"
           v-model="formData.registeredProvince"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Registered At"
         />
         <input
           type="text"
           v-model="formData.manufacturingDate"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Manufacturing Date"
         />
         <input
           type="text"
           v-model="formData.enginePower"
-          class="bg-accent w-full rounded-lg h-[5%] p-1.5 mb-4 text-black"
+          class="bg-accent w-full rounded-lg h-[7%] p-1.5 mb-4 text-black"
           placeholder="Engine Power"
         />
         <div class="w-full h-full flex flex-col justify-center flex-1">
@@ -80,7 +87,7 @@ import axios from 'axios';
     </div>
   </form>
 </template>
-<script lang="ts">
+<script lang="js">
 import { endPoints } from "@/constants/apiEndpoints";
 import store from "@/store";
 import axios from "axios";
@@ -100,16 +107,38 @@ export default defineComponent({
         // Add more fields for other asset details
       },
       selectedImage: null, // Store the selected image file
+      selectedImageURL: null, // Store the URL of the selected image for display
+      imageSelected: false
     };
   },
+  computed: {
+    user() {
+      if (store.getters.getUsername == null) {
+        return "Guest";
+      } else {
+        return store.getters.getUsername;
+      }
+    },
+  },
   methods: {
-    handleImageUpload(event: any) {
+    handleImageUpload(event ) {
       // Store the selected image file
       this.selectedImage = event.target.files[0];
-      console.log(this.selectedImage);
-      console.log(typeof this.selectedImage);
+
+      // Convert the selected image to a data URL
+      const reader = new FileReader();
+      reader.readAsDataURL(this.selectedImage);
+      reader.onload = () => {
+        // Set the URL of the selected image for display
+        this.selectedImageURL = reader.result;
+      };
+      this.imageSelected = true;
     },
     async submitForm() {
+      if(this.user === "Guest") {
+        alert("Please login to continue");
+        return;
+      }
       // Create a FormData object
       const formData = new FormData();
 
