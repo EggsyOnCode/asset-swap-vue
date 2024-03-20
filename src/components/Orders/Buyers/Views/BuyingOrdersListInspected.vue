@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="w-full mt-6 flex flex-col items-center">
     <BuyerOrderCardInspectedVue
+      @card-updated="fetchData()"
       v-for="(asset, index) in sellerOrders"
       :key="index"
       :price="asset.asset.price"
@@ -67,31 +68,35 @@ export default defineComponent({
       this.sellerOrders = transformedOrders;
       console.log("seller orders", this.sellerOrders);
     },
-  },
-  mounted() {
-    // Replace 'yourBearerToken' with the actual bearer token
-    const token = store.getters.getToken;
-    axios
-      .get(
-        `${endPoints.ordersUrl}/orders/buyer/inspected/${store.getters.getUserId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => {
-        // Handle the response data and render order cards
-        // For example, if the response data is an array of orders
-        // you can loop through the orders and render them as cards
-        const orders = response.data;
-        this.transformResponseData(response.data);
+    fetchData() {
+      // Replace 'yourBearerToken' with the actual bearer token
+      const token = store.getters.getToken;
+      axios
+        .get(
+          `${endPoints.ordersUrl}/orders/buyer/inspected/${store.getters.getUserId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          // Handle the response data and render order cards
+          // For example, if the response data is an array of orders
+          // you can loop through the orders and render them as cards
+          const orders = response.data;
+          this.transformResponseData(response.data);
 
-        // Render the order cards here
-      })
-      .catch((error) => {
-        console.error("Error fetching orders:", error);
-      });
+          // Render the order cards here
+        })
+        .catch((error) => {
+          console.error("Error fetching orders:", error);
+        });
+    },
+  },
+
+  mounted() {
+    this.fetchData();
   },
 });
 </script>

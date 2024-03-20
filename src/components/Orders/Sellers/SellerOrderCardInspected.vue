@@ -209,6 +209,7 @@ export default defineComponent({
         alert("order couldn't be marked inspected");
       } else {
         alert("order marked inspected successfully!");
+        this.$emit("card-updated");
       }
     },
     async confirmOrder() {
@@ -283,6 +284,7 @@ export default defineComponent({
         alert("order couldn't be completed");
       } else {
         alert("order succesfully completed!");
+        this.$emit("card-updated");
       }
     },
     async cancelOrder() {
@@ -309,6 +311,7 @@ export default defineComponent({
         alert("order couldn't be cancelled");
       } else {
         alert("order cancelled successfully!");
+        this.$emit("card-updated");
       }
     },
     async cancelOrderBeforeDeposit() {
@@ -330,6 +333,7 @@ export default defineComponent({
         alert("order couldn't be cancelled successfully");
       } else {
         alert("order cancelled successfully!");
+        this.$emit("card-updated");
       }
     },
     async storeNft(nftAddr: string) {

@@ -172,6 +172,7 @@ export default defineComponent({
         alert("funds couldn't be deposited");
       } else {
         alert("funds deposited successfully!");
+        this.$emit("card-updated");
       }
     },
     async inspectOrder() {
@@ -193,6 +194,7 @@ export default defineComponent({
         alert("order couldn't be marked inspected");
       } else {
         alert("order marked inspected successfully!");
+        this.$emit("card-updated");
       }
     },
     async confirmOrder() {
@@ -214,6 +216,7 @@ export default defineComponent({
         alert("order couldn't be confirmed");
       } else {
         alert("order marked confirmed from buyer successfully!");
+        this.$emit("card-updated");
       }
     },
     async cancelOrder() {
@@ -241,6 +244,7 @@ export default defineComponent({
         alert("order couldn't be cancelled successfully");
       } else {
         alert("order cancelled successfully!");
+        this.$emit("card-updated");
       }
     },
     async cancelOrderBeforeDeposit() {
@@ -263,6 +267,7 @@ export default defineComponent({
         alert("order couldn't be cancelled successfully");
       } else {
         alert("order cancelled successfully!");
+        this.$emit("card-updated");
       }
     },
   },

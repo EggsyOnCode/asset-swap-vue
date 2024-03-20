@@ -133,6 +133,7 @@ export default defineComponent({
           alert("crypto price couldn't be updated");
         } else {
           alert("crypto price updated successfully!");
+          this.$emit("card-updated");
         }
         this.onClose();
       }
