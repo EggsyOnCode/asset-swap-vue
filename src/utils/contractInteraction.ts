@@ -7,13 +7,13 @@ import {
 } from "./contracts";
 
 //using the anvil json rpc provider and local testnet ethereum fork
-// const rpcProvider = new ethers.providers.JsonRpcProvider(
-//   "http://127.0.0.1:7000"
-// );
-
 const rpcProvider = new ethers.providers.JsonRpcProvider(
-  process.env.VUE_APP_ALCHEMY_API
+  "http://127.0.0.1:7000"
 );
+
+// const rpcProvider = new ethers.providers.JsonRpcProvider(
+//   process.env.VUE_APP_ALCHEMY_API
+// );
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import axios from "axios";
 

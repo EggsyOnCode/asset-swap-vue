@@ -2,11 +2,14 @@
   <div
     class="mr-6 bg-bg p-2 flex flex-col items-start w-full rounded-[11px] font-garamond h-full"
   >
-    <img
-      src="../Home/../../assets/wallpaper.jpg"
-      alt="free-img-api"
-      class="h-[100px] w-full rounded-[11px] bg-primary"
-    />
+    <div class="w-full h-[40%]">
+      <img
+        v-if="imgUrl"
+        :src="imgUrl"
+        alt="asset image"
+        class="w-full h-full rounded-lg"
+      />
+    </div>
     <h1 class="font-bold text-2xl">{{ model }}</h1>
     <div class="card-item">
       <strong>Manufacturing Date:</strong> {{ manufacturingDate }}
@@ -51,7 +54,8 @@ export default {
     manufacturingDate: String,
     assetId: String,
     sellerId: String,
-    sellerWalletAddress: String
+    sellerWalletAddress: String,
+    imgUrl: String,
   },
   data() {
     return {};

@@ -172,6 +172,9 @@ checkUserAuthentication() {
         .then((response) => {
           // Handle the response from the backend
           console.log("Response from backend:", response.data);
+          if(response.data.model === this.formData.model){
+            alert("Asset Order created successfully");
+          }
         })
         .catch((error) => {
           // Handle errors

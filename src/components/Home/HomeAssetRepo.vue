@@ -16,6 +16,7 @@
         :assetId="item.assetId"
         :sellerId="item.userId"
         :sellerWalletAddress="item.user.walletAddress"
+        :imgUrl="item.asset.imgUrl"
       />
     </div>
   </div>
