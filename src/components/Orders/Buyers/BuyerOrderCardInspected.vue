@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
+  <div class="w-9/12 flex flex-row bg-secondary rounded-lg my-2">
     <img
       v-if="imgUrl"
       :src="imgUrl"
@@ -123,6 +123,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    cryptoPrice: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {};
@@ -143,9 +147,11 @@ export default defineComponent({
   },
   methods: {
     async depositFunds() {
+      console.log("cryto price is", this.cryptoPrice);
+
       const orderManager = new OrderManager(
         this.$props.orderManagerContractAddress,
-        this.$props.price
+        this.$props.cryptoPrice
       );
       await orderManager.deposit();
       const data = {
@@ -211,10 +217,10 @@ export default defineComponent({
       }
     },
     async cancelOrder() {
-      const priceEth = await pkrToEth(this.$props.price);
+      console.log("cancelling the order after funds deposited..");
       const orderManager = new OrderManager(
         this.$props.orderManagerContractAddress,
-        priceEth.toString()
+        this.$props.cryptoPrice
       );
       await orderManager.cancel();
       const data = {
@@ -238,6 +244,7 @@ export default defineComponent({
       }
     },
     async cancelOrderBeforeDeposit() {
+      console.log("cancelling the order before funds deposited..");
       const data = {
         state: State.B_CANCELLED,
       };

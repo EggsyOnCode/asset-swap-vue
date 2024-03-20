@@ -122,7 +122,7 @@ export default defineComponent({
     },
   },
   methods: {
-checkUserAuthentication() {
+  checkUserAuthentication() {
     if (this.user === "Guest") {
       alert("Please login to continue");
       return false; // Indicate that authentication failed

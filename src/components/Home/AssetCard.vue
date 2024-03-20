@@ -40,9 +40,10 @@ import { endPoints } from '@/constants/apiEndpoints';
 import store from '@/store';
 import { deployOrderManagerContract } from '@/utils/contractInteraction';
 import axios from 'axios';
+import { defineComponent } from 'vue';
 
 
-export default {
+export default defineComponent({
     props: {
     model: String,
     price: String,
@@ -60,10 +61,27 @@ export default {
   data() {
     return {};
   },
-  components: {
+  computed: {
+    user() {
+      if (store.getters.getUsername == null) {
+        return "Guest";
+      } else {
+        return store.getters.getUsername;
+      }
+    }
   },
   methods: {
+  checkUserAuthentication() {
+    if (this.user === "Guest") {
+      alert("Please login to continue");
+      return false; // Indicate that authentication failed
+    }
+    return true; // Indicate that authentication passed
+  },
     async createOrder(){
+      if (this.checkUserAuthentication() === false) {
+        return;
+      }
       try {
         const payload = {
           sellerId: this.$props.sellerId,
@@ -97,5 +115,5 @@ export default {
 
     }
   }
-};
+});
 </script>

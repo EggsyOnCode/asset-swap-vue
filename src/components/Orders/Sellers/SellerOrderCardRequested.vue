@@ -1,5 +1,8 @@
 <template lang="html">
-  <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
+  <div
+    v-if="!closeComp"
+    class="w-9/12 flex flex-row bg-secondary rounded-lg my-2"
+  >
     <img
       v-if="imgUrl"
       :src="imgUrl"
@@ -70,18 +73,31 @@ export default defineComponent({
     buyerWalletAddress: String || undefined,
     imgUrl: String,
   },
+  data() {
+    return {
+      closeComp: false,
+    };
+  },
   methods: {
+    onClose() {
+      this.closeComp = true;
+    },
     async createOrderContract() {
       const sellerAddr = await store.getters.getUserWallet;
       console.log(sellerAddr);
 
       const priceEth = await pkrToEth(this.$props.price);
 
+      console.log(
+        "the price of the ordermanger contract is",
+        priceEth.toString()
+      );
       const orderManager = await deployOrderManagerContract(
         this.$props.buyerWalletAddress,
         sellerAddr,
         priceEth.toString()
       );
+
       const token = store.getters.getToken;
       const data = {
         state: State.S_APPROVED,
@@ -100,6 +116,25 @@ export default defineComponent({
         alert("order contract couldn't be created");
       } else {
         alert("Order contract succesfully created!");
+        const data = {
+          cryptoPrice: priceEth.toString(),
+        };
+
+        const res1 = await axios.put(
+          `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (res1.status !== 200) {
+          alert("crypto price couldn't be updated");
+        } else {
+          alert("crypto price updated successfully!");
+        }
+        this.onClose();
       }
     },
   },

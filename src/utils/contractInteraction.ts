@@ -8,7 +8,7 @@ import {
 
 //using the anvil json rpc provider and local testnet ethereum fork
 const rpcProvider = new ethers.providers.JsonRpcProvider(
-  "http://127.0.0.1:7000"
+  "http://127.0.0.1:8545"
 );
 
 // const rpcProvider = new ethers.providers.JsonRpcProvider(
@@ -66,7 +66,7 @@ export async function deployOrderManagerContract(
         orderManagerByteCode,
         account
       );
-      const tPrice = ethers.utils.parseUnits(price, 18);
+      const tPrice = await ethers.utils.parseUnits(price, 18);
       console.log("deploying...");
       const contract = await factory.deploy(buyerAddress, sellerAddr, tPrice);
       console.log(contract.address);
@@ -84,6 +84,7 @@ export class OrderManager {
   private contract: ethers.Contract;
   private signer: ethers.Signer;
 
+  //price received will be in ETH
   constructor(public contractAddress: string, private price: string) {
     this.contract = new ethers.Contract(
       contractAddress,
@@ -109,25 +110,31 @@ export class OrderManager {
 
   async deposit() {
     await this.init();
-    const pkrEthResponse = await axios.get(
-      "https://api.coinbase.com/v2/exchange-rates?currency=ETH"
-    );
-    const rate = pkrEthResponse.data.data.rates["PKR"];
-    const ethPrice: number = parseFloat(this.price) / rate;
-    const roundedEthPrice: number = parseFloat(ethPrice.toFixed(3));
-    console.log(roundedEthPrice);
+    console.log("price is ", this.price);
+    // const pkrEthResponse = await axios.get(
+    //   "https://api.coinbase.com/v2/exchange-rates?currency=ETH"
+    // );
+    // const rate = pkrEthResponse.data.data.rates["PKR"];
+    // const ethPrice: number = parseFloat(this.price) / rate;
+    // const roundedEthPrice: number = parseFloat(ethPrice.toFixed(3));
+    // console.log(roundedEthPrice);
     const options = {
-      value: ethers.utils.parseEther(roundedEthPrice.toString()),
+      value: ethers.utils.parseEther(this.price),
     };
+    console.log("here we are befoire signing...");
 
     const signedContract = this.contract.connect(this.signer);
+    console.log("here we are after signing...");
     try {
       // Send transaction to deposit funds
       const transactionResponse = await signedContract.deposit(options);
+      console.log("here we are waiting for depositing funds...");
       await transactionResponse.wait();
-      console.log("Funds withdraw by the seller successfully");
+      console.log("here we are after depositing funds...");
+
+      console.log("Funds deposited by the buyer successfully");
     } catch (error) {
-      console.error("Error withdrawing funds:", error);
+      console.error("Error depositing funds:", error);
     }
   }
 
@@ -138,9 +145,9 @@ export class OrderManager {
       // Send transaction to deposit funds
       const transactionResponse = await signedContract.withdraw();
       await transactionResponse.wait();
-      console.log("Funds deposited successfully");
+      console.log("Funds withdrawn successfully");
     } catch (error) {
-      console.error("Error depositing funds:", error);
+      console.error("Error withdrawing funds:", error);
     }
   }
   async cancel() {

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
+  <div class="w-9/12 flex flex-row bg-secondary rounded-lg my-2">
     <img
       v-if="imgUrl"
       :src="imgUrl"
@@ -169,6 +169,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    orderManagerContractAddress: {
+      type: String,
+      required: true,
+    },
+    cryptoPrice: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
@@ -278,6 +286,11 @@ export default defineComponent({
       }
     },
     async cancelOrder() {
+      const orderManager = new OrderManager(
+        this.$props.orderManagerContractAddress,
+        this.$props.cryptoPrice
+      );
+      await orderManager.cancel();
       const data = {
         state: State.S_CANCELLED,
       };

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="mt-6 flex flex-col items-center">
+  <div class="w-full mt-6 flex flex-col items-center">
     <SellerOrderCardRequestedVue
       v-for="(asset, index) in sellerOrders"
       :key="index"

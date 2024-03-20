@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="mt-6 flex flex-col items-center">
+  <div class="w-full mt-6 flex flex-col items-center">
     <BuyerOrderCardInspectedVue
       v-for="(asset, index) in sellerOrders"
       :key="index"
@@ -14,6 +14,7 @@
       :orderManagerContractAddress="asset.orderManager"
       :state="asset.asset.state"
       :imgUrl="asset.asset.imgUrl"
+      :cryptoPrice="asset.cryptoPrice"
     />
   </div>
 </template>
@@ -30,6 +31,7 @@ interface BuyerOrder {
   orderId: number;
   orderManager: string;
   nftContractAddress: string;
+  cryptoPrice: string;
 }
 export default defineComponent({
   components: {
@@ -59,6 +61,7 @@ export default defineComponent({
           orderId: item.orderId,
           orderManager: item.orderManager,
           nftContract: item.nftContract,
+          cryptoPrice: item.cryptoPrice,
         };
       });
       this.sellerOrders = transformedOrders;

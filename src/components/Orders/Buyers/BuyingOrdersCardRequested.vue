@@ -1,5 +1,8 @@
 <template lang="html">
-  <div class="w-7/12 flex flex-row bg-secondary rounded-lg my-2">
+  <div
+    id="flex-container"
+    class="w-9/12 flex flex-row bg-secondary rounded-lg my-2"
+  >
     <img
       v-if="imgUrl"
       :src="imgUrl"
