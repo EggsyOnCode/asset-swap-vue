@@ -104,7 +104,7 @@ export default defineComponent({
         orderManagerContract: orderManager.contractAddress,
       };
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -121,7 +121,7 @@ export default defineComponent({
         };
 
         const res1 = await axios.put(
-          `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+          `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
           data,
           {
             headers: {

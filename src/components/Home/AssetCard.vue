@@ -38,6 +38,7 @@
 <script lang="js">
 import { endPoints } from '@/constants/apiEndpoints';
 import store from '@/store';
+import { State } from '@/store/constants';
 import { deployOrderManagerContract } from '@/utils/contractInteraction';
 import axios from 'axios';
 import { defineComponent } from 'vue';
@@ -87,6 +88,7 @@ export default defineComponent({
           sellerId: this.$props.sellerId,
           buyerId: store.getters.getUserId,
           assetId: this.$props.assetId,
+          state : State.B_REQUESTED
         };
 
         // Replace 'yourBearerToken' with the actual bearer token

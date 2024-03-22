@@ -197,7 +197,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -229,7 +229,7 @@ export default defineComponent({
         state: State.S_CONFIRMED,
       };
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -272,7 +272,7 @@ export default defineComponent({
         state: State.COMPLETED,
       };
       const response = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
         dataComplete,
         {
           headers: {
@@ -300,7 +300,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -322,7 +322,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlSeller}${this.$props.orderId}`,
         data,
         {
           headers: {

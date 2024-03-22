@@ -160,7 +160,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlBuyer}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -182,7 +182,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlBuyer}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -204,7 +204,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlBuyer}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -232,7 +232,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlBuyer}${this.$props.orderId}`,
         data,
         {
           headers: {
@@ -255,7 +255,7 @@ export default defineComponent({
 
       const token = store.getters.getToken;
       const res = await axios.put(
-        `${endPoints.ordersUrl}/orders/${this.$props.orderId}`,
+        `${endPoints.ordersUrlBuyer}${this.$props.orderId}`,
         data,
         {
           headers: {
